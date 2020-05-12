@@ -1,6 +1,7 @@
+<label>Username</label>
+<input type="text" class="form-control" [(ngModel)]="userName">
+<p>{{userName}}</p>
 <button
- class="btn btn-primary"
- [disabled]="!allowNewServer">Add Server</button>
-<p [innerText]="allowNewServer">Loading...</p>
-<app-server></app-server>
-<app-server></app-server>
+class="btn btn-primary"
+[disabled]="userName === ''"
+(click)="userName = ''">Reset Username</button>
