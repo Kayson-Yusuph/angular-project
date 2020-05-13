@@ -1,16 +1,20 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12">
-      <h3>This's AppComponent</h3>
-      <hr>
-      <app-servers></app-servers>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12">
-      <app-danger-alert></app-danger-alert>
-      <app-warning-alert></app-warning-alert>
-      <app-success-alert></app-success-alert>
+      <button
+        class="btn btn-primary"
+        (click)="onButtonClick()">
+        {{showDetails? 'Hide':'Display'}} Details
+      </button>
+      <p *ngIf="showDetails else noDisplay">My wife name is Gift</p>
+      <ng-template #noDisplay>
+        <p>No Detail to display</p>
+      </ng-template>
+      <div *ngFor="let click of clicks; let i = index">
+        <p
+          [ngStyle]="{backgroundColor: i >= 4? 'blue': 'white'}"
+          [ngClass]="{great: i >= 4}">You've clicked {{click}} time(s)</p>
+      </div>
     </div>
   </div>
 </div>

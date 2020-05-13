@@ -4,10 +4,19 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styles: [`
-  h3 {
-    color: dodgerblue;
+  .great {
+    color: white;
   }
   `]
 })
 export class AppComponent {
+  showDetails = false;
+  clicks = [];
+  count = 0;
+
+  onButtonClick() {
+    this.count++;
+    this.showDetails = !this.showDetails;
+    this.clicks.push(this.count);
+  }
 }
