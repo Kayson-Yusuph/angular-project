@@ -9,7 +9,7 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ReciepeListComponent } from './reciepes/reciepe-list/reciepe-list.component';
 import { ReciepeItemComponent } from './reciepes/reciepe-list/reciepe-item/reciepe-item.component';
 import { ReciepeDetailComponent } from './reciepes/reciepe-detail/reciepe-detail.component';
-import { ShoppingDetailsComponent } from './shopping-list/shopping-details/shopping-details.component';
+import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 import { HeaderComponent } from './header/header.component';
 
 @NgModule({
@@ -20,7 +20,7 @@ import { HeaderComponent } from './header/header.component';
     ReciepeListComponent,
     ReciepeItemComponent,
     ReciepeDetailComponent,
-    ShoppingDetailsComponent,
+    ShoppingEditComponent,
     HeaderComponent
   ],
   imports: [
