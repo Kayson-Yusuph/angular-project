@@ -10,7 +10,7 @@ import { Reciepe } from '../reciepe.model';
 export class ReciepeListComponent implements OnInit {
 
   reciepes: Reciepe[] = [
-    new Reciepe('A Test Reciepe', 'This is a simple reciepe test', './home/joasjaphes/Pictures/key_to_success.png')
+    new Reciepe('A Test Reciepe', 'This is a simple reciepe test', 'https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/caponata-pasta_1.jpg')
   ];
 
   constructor() { }
