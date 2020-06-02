@@ -15,14 +15,14 @@ export class RecipeListComponent implements OnInit {
   ];
 
   detailedRecipe: Recipe;
-  @Output() showItemDetails = new EventEmitter<Recipe>();
+  @Output('showRecipeDetails') showItemDetails = new EventEmitter<Recipe>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  onShowRecipeDetails(item: Recipe) {
+  onRecipeSelected(item: Recipe) {
     this.showItemDetails.emit(item);
   }
 

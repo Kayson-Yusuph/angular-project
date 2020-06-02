@@ -1,38 +1,36 @@
-<ng-container *ngIf="recipe">
-  <div class="row">
-    <div class="col-xs-12">
-      <img src="" alt="" class="img-responsive">
+<div class="row">
+  <div class="col-xs-12">
+    <img src="" alt="" class="img-responsive">
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <h1>{{ recipe.name }}</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="button-group">
+      <button
+        type="button"
+        class="btn btn-primary dropdown-toggle">
+        Manage Recipe<span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <a href="#">To Shopping List</a>
+        <a href="#">Edit Recipe</a>
+        <a href="#">Delete Recipe List</a>
+      </ul>
     </div>
   </div>
-  <div class="row">
-    <div class="col-xs-12">
-      <h1>Recipe Heading</h1>
-    </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    {{ recipe.description }}
   </div>
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="button-group">
-        <button
-          type="button"
-          class="btn btn-primary dropdown-toggle">
-          Manage Recipe<span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <a href="#">To Shopping List</a>
-          <a href="#">Edit Recipe</a>
-          <a href="#">Delete Recipe List</a>
-        </ul>
-      </div>
-    </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    Ingredients
   </div>
-  <div class="row">
-    <div class="col-xs-12">
-      {{ recipe.description }}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12">
-      Ingredients
-    </div>
-  </div>
-</ng-container>
+</div>
