@@ -6,4 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  showRecipes = true;
+  navigateToRecipesPage() {
+    this.showRecipes = true;
+  }
+  navigateToShoppingListPage() {
+    this.showRecipes = false;
+  }
 }
