@@ -9,14 +9,10 @@ import { Component, EventEmitter, Output } from '@angular/core';
 
 export class HeaderComponent {
 
-  @Output('recipeNavigate') navigateToRecipes = new EventEmitter();
-  @Output('shoppingListNavigate') navigateToShoppingList = new EventEmitter();
+  @Output('selectMenu') selectedMenu = new EventEmitter<boolean>();
 
-  onRecipeNavigate() {
-    this.navigateToRecipes.emit();
-  }
-  onShoppingListNavigate() {
-    this.navigateToShoppingList.emit();
+  onSelected(value: boolean) {
+    this.selectedMenu.emit(value);
   }
 
 }

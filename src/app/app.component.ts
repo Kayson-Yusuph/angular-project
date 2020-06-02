@@ -7,10 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   showRecipes = true;
-  navigateToRecipesPage() {
-    this.showRecipes = true;
-  }
-  navigateToShoppingListPage() {
-    this.showRecipes = false;
+
+  onNavigation(evt: boolean) {
+    this.showRecipes = evt;
   }
 }
