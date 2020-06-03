@@ -12,7 +12,6 @@ import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.com
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 import { HeaderComponent } from './header/header.component';
 import { DropdownDirective } from './shared/dropdown.directive';
-import { RecipeService } from './services/recipes.service';
 import { ShoppingListService } from './services/shopping-list.service';
 
 @NgModule({
@@ -32,7 +31,7 @@ import { ShoppingListService } from './services/shopping-list.service';
     HttpClientModule,
     FormsModule
   ],
-  providers: [RecipeService, ShoppingListService],
+  providers: [ShoppingListService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
