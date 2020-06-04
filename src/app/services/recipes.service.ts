@@ -1,13 +1,30 @@
 import { EventEmitter } from '@angular/core';
 
 import { Recipe } from '../recipes/recipe.model';
+import { Ingredient } from '../shared/ingredient.model';
 
 export class RecipeService {
 
   selectRecipe = new EventEmitter<Recipe>();
   private recipes: Recipe[] = [
-    new Recipe('A Test recipe', 'This is a simple recipe test', 'https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/caponata-pasta_1.jpg'),
-    new Recipe('A New recipe', 'This is a next recipe test', 'https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/caponata-pasta_1.jpg')
+    new Recipe(
+      'A Pizza',
+      'This is a vegetable pizza',
+      'https://chocolatecoveredkatie.com/wp-content/uploads/2020/02/The-Best-Vegan-Pizza-Recipe-500x500.jpg',
+      [
+        new Ingredient('Spinach', 7),
+        new Ingredient('Potatoes', 5),
+        new Ingredient('Eggs', 3),
+      ]),
+    new Recipe(
+      'A Bugger',
+      'This is a bugger',
+      'https://previews.123rf.com/images/luizrocha/luizrocha1602/luizrocha160200666/51638539-buger.jpg',
+      [
+        new Ingredient('Eggs', 5),
+        new Ingredient('chicken Meat', 1),
+        new Ingredient('Bread', 6)
+      ])
   ];
 
   getRecipes() {
