@@ -6,10 +6,12 @@ import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.com
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { ShoppingListEditComponent } from './shopping-list/shopping-list-edit/shopping-list-edit.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 
 const appRoutes: Routes = [
   {
     path: 'recipes', component: RecipesComponent, children: [
+      { path: '', component: RecipeStartComponent },
       { path: ':id/details', component: RecipeDetailComponent },
       { path: ':id/edit', component: RecipeEditComponent },
     ]
