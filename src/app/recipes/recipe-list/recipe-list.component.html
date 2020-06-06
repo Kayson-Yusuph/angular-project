@@ -8,7 +8,7 @@
   <div class="col-xl-12">
     <app-recipe-item
       *ngFor="let recipe of recipes; let i = index"
-      [routerLink]="['/recipes', i, 'details']"
+      [routerLink]="['/recipes', i]"
       [recipeItem]="recipe"
       ></app-recipe-item>
   </div>
