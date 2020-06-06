@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -9,15 +8,4 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 
 export class HeaderComponent {
-
-  constructor(private route: ActivatedRoute, private router: Router) { }
-
-  onSelected(value: boolean) {
-    if (value) {
-      this.router.navigate(['/recipes']);
-    } else {
-      this.router.navigate(['/shopping-list']);
-    }
-  }
-
 }
