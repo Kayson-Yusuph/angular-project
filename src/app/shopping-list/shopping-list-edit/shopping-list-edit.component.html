@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xs-12">
-    <form (ngSubmit)="onAdd(f)" #f="ngForm">
+    <form (ngSubmit)="onSave(f)" #f="ngForm">
       <div class="row">
         <div class="col-sm-5 form-group">
           <label for="name">Name</label>
@@ -9,7 +9,7 @@
             id="name"
             class="form-control"
             name="name"
-            ngModel
+            [(ngModel)]="ingredient.name"
             required
           >
         </div>
@@ -20,7 +20,7 @@
             id="amount"
             class="form-control"
             name="amount"
-            ngModel
+            [(ngModel)]="ingredient.amount"
             required
             pattern="^[1-9][0-9]*$"
           >

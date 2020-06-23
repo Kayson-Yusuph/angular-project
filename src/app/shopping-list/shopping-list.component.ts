@@ -12,21 +12,25 @@ import { Subscription } from 'rxjs';
 
 export class ShoppingListComponent implements OnInit, OnDestroy {
 
-  ingredients: Ingredient[];
-  private igSubscription: Subscription;
+  ingredients: Ingredient[] = [];
+  private igSubscriptions: Subscription[] = [];
 
-  constructor(private shoppingListService: ShoppingListService) {}
+  constructor(private sLService: ShoppingListService) {}
 
   ngOnInit() {
-    this.ingredients = this.shoppingListService.getIngredients();
-    this.igSubscription = this.shoppingListService.ingredientsChanged
+    this.ingredients = this.sLService.getIngredients();
+    this.igSubscriptions.push(this.sLService.ingredientsChanged
     .subscribe((newIngredients: Ingredient[]) => {
       this.ingredients = newIngredients;
-    });
+    }));
+  }
+
+  edit(index: number) {
+    this.sLService.ingredientToEdit.next(index);
   }
 
   ngOnDestroy() {
-    this.igSubscription.unsubscribe();
+    this.igSubscriptions.forEach(igSub => igSub.unsubscribe());
   }
 
 }
