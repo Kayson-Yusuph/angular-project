@@ -14,7 +14,7 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
   @ViewChild('f', {static: false}) slForm: NgForm;
 
   igSubscription: Subscription;
-  ingredient: Ingredient = new Ingredient('', null);
+  ingredient: Ingredient;
   isAdd = true;
   igIndex = -1;
   constructor(private sLService: ShoppingListService) { }
@@ -42,12 +42,23 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
     } else {
       this.sLService.updateIngredient(this.igIndex, ingredient);
     }
+    this.resetForm();
   }
 
   onDelete() {
+    this.sLService.deleteIngredient(this.igIndex);
+    this.resetForm();
   }
 
   onClear() {
+    this.resetForm();
+  }
+
+  resetForm() {
+    this.igIndex = -1;
+    this.isAdd = true;
+    this.ingredient = null;
+    this.slForm.reset();
   }
 
   ngOnDestroy() {
