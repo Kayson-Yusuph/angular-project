@@ -9,7 +9,7 @@
             id="name"
             class="form-control"
             name="name"
-            [(ngModel)]="ingredient.name"
+            ngModel
             required
           >
         </div>
@@ -20,7 +20,7 @@
             id="amount"
             class="form-control"
             name="amount"
-            [(ngModel)]="ingredient.amount"
+            ngModel
             required
             pattern="^[1-9][0-9]*$"
           >
@@ -28,7 +28,7 @@
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <button class="btn btn-success" type="submit" [disabled]="f.invalid">Add</button>
+          <button class="btn btn-success" type="submit" [disabled]="f.invalid">{{isAdd? 'Add' : 'Update'}}</button>
           <button class="btn btn-danger" type="button" (click)="onDelete()">Delete</button>
           <button class="btn btn-primary" type="button" (click)="onClear()">Clear</button>
         </div>

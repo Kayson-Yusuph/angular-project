@@ -16,7 +16,7 @@ export class ShoppingListService {
   }
 
   getIngredient(index: number) {
-    const ig = this.ingredients.slice()[index];
+    const ig = this.ingredients[index];
     return ig;
   }
 
@@ -26,8 +26,8 @@ export class ShoppingListService {
   }
 
   updateIngredient(index: number, newIg: Ingredient) {
-    // this.ingredients[index] = newIg;
-    console.log({index, newIg});
+    this.ingredients[index] = newIg;
+    this.ingredientsChanged.next(this.ingredients.slice());
   }
 
   addIngredients(ingredients: Ingredient[]) {
