@@ -44,8 +44,14 @@ export class RecipeService {
     return this.recipes.slice();
   }
 
+  updateRecipe(index: number, recipe: Recipe) {
+    this.recipes[index] = recipe;
+    this.updateRecipes.next(this.recipes.slice());
+  }
+
   addRecipe(recipe: Recipe) {
     this.recipes.push(recipe);
+    this.updateRecipes.next(this.recipes.slice());
   }
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
