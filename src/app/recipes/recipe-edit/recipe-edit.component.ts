@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 
 import { RecipeService } from '../../services/recipes.service';
@@ -15,16 +15,17 @@ export class RecipeEditComponent implements OnInit {
   editMode = false;
   recipeForm: FormGroup;
 
-  constructor(private route: ActivatedRoute, private recipeService: RecipeService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private recipeService: RecipeService,
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit(): void {
-    this.initForm();
     this.route.params.subscribe((params: Params) => {
-      if (params.id !== undefined) {
-        this.id = +params.id;
-        this.editMode = true;
-        this.initForm();
-      }
+      this.id = +params.id;
+      this.editMode = params.id !== undefined;
+      this.initForm();
     });
   }
 
@@ -32,16 +33,26 @@ export class RecipeEditComponent implements OnInit {
     let name = '';
     let imagePath = '';
     let description = '';
+    const ingredients = this.fb.array([]);
     if (this.editMode) {
       const recipe = this.recipeService.getRecipe(this.id);
       name = recipe.name;
       imagePath = recipe.imagePath;
       description = recipe.description;
+      for (const ingredient of recipe.ingredients) {
+        ingredients.push(
+          this.fb.group({
+              name: this.fb.control(ingredient.name),
+              amount: this.fb.control(ingredient.amount)
+            }),
+          );
+      }
     }
-    this.recipeForm = new FormGroup({
-      name: new FormControl(name),
-      imagePath: new FormControl(imagePath),
-      description: new FormControl(description)
+    this.recipeForm = this.fb.group({
+      name: this.fb.control(name),
+      imagePath: this.fb.control(imagePath),
+      description: this.fb.control(description),
+      ingredients
     });
   }
 
@@ -53,5 +64,14 @@ export class RecipeEditComponent implements OnInit {
       this.recipeService.addRecipe(newRecipe);
     }
   }
+
+    onAddIngredient() {
+      (this.recipeForm.get('ingredients') as FormArray).push(
+        this.fb.group({
+          name: this.fb.control(null),
+          amount: this.fb.control(null)
+        })
+      );
+    }
 
 }
