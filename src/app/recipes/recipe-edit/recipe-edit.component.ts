@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormArray, FormBuilder, Validators, PatternValidator } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 
 import { RecipeService } from '../../services/recipes.service';
@@ -42,16 +42,16 @@ export class RecipeEditComponent implements OnInit {
       for (const ingredient of recipe.ingredients) {
         ingredients.push(
           this.fb.group({
-            name: this.fb.control(ingredient.name),
-            amount: this.fb.control(ingredient.amount)
+            name: this.fb.control(ingredient.name, this.getFormInputValidators(3)),
+            amount: this.fb.control(ingredient.amount, [Validators.required, Validators.pattern('^[1-9][0-9]*$')])
           }),
         );
       }
     }
     this.recipeForm = this.fb.group({
-      name: this.fb.control(name),
-      imagePath: this.fb.control(imagePath),
-      description: this.fb.control(description),
+      name: this.fb.control(name, this.getFormInputValidators(3)),
+      imagePath: this.fb.control(imagePath, Validators.required),
+      description: this.fb.control(description, this.getFormInputValidators(10)),
       ingredients
     });
   }
@@ -68,10 +68,14 @@ export class RecipeEditComponent implements OnInit {
   onAddIngredient() {
     (this.recipeForm.get('ingredients') as FormArray).push(
       this.fb.group({
-        name: this.fb.control(null),
-        amount: this.fb.control(null)
+        name: this.fb.control(null, this.getFormInputValidators(3)),
+        amount: this.fb.control(null, [Validators.required, Validators.pattern('^[1-9][0-9]*$')])
       })
     );
+  }
+
+  getFormInputValidators(min: number): any[] {
+    return [Validators.required, Validators.minLength(min)/*, Validators.pattern('^[A-Za-z0-9]+$')*/];
   }
 
   onRemoveIngredient(index: number) {
