@@ -58,19 +58,24 @@
         </div>
       </div>
       <!-- Ingredients -->
-      <div
-      class="row"
-      *ngFor="let ingredientCtrl of recipeForm.get('ingredients')['controls']; let i = index"
-      [formGroupName]="i"
-      style="margin-top: 10px">
-        <div class="col-xs-8">
-          <input type="text" class="form-control" formControlName="name">
-        </div>
-        <div class="col-xs-2">
-          <input type="text" class="form-control" formControlName="amount">
-        </div>
-        <div class="col-xs-2">
-          <button type="button" class="btn-danger form-control" type="button">X</button>
+      <div class="row">
+        <div class="col-xs-12" formArrayName="ingredients">
+          <div class="row" *ngFor="let ingredientCtrl of recipeForm.get('ingredients')['controls']; let i = index"
+            [formGroupName]="i" style="margin-top: 10px">
+            <div class="col-xs-8">
+              <input type="text" class="form-control" formControlName="name">
+            </div>
+            <div class="col-xs-2">
+              <input type="text" class="form-control" formControlName="amount">
+            </div>
+            <div class="col-xs-2">
+              <button
+                type="button"
+                class="btn-danger form-control"
+                type="button"
+                (click)="onRemoveIngredient(i)">X</button>
+            </div>
+          </div>
         </div>
       </div>
       <hr>

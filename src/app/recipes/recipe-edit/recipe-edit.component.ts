@@ -42,10 +42,10 @@ export class RecipeEditComponent implements OnInit {
       for (const ingredient of recipe.ingredients) {
         ingredients.push(
           this.fb.group({
-              name: this.fb.control(ingredient.name),
-              amount: this.fb.control(ingredient.amount)
-            }),
-          );
+            name: this.fb.control(ingredient.name),
+            amount: this.fb.control(ingredient.amount)
+          }),
+        );
       }
     }
     this.recipeForm = this.fb.group({
@@ -65,13 +65,17 @@ export class RecipeEditComponent implements OnInit {
     }
   }
 
-    onAddIngredient() {
-      (this.recipeForm.get('ingredients') as FormArray).push(
-        this.fb.group({
-          name: this.fb.control(null),
-          amount: this.fb.control(null)
-        })
-      );
-    }
+  onAddIngredient() {
+    (this.recipeForm.get('ingredients') as FormArray).push(
+      this.fb.group({
+        name: this.fb.control(null),
+        amount: this.fb.control(null)
+      })
+    );
+  }
+
+  onRemoveIngredient(index: number) {
+    (this.recipeForm.get('ingredients') as FormArray).removeAt(index);
+  }
 
 }
