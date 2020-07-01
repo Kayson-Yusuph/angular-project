@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormArray, FormBuilder, Validators, PatternValidator } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { RecipeService } from '../../services/recipes.service';
 import { Recipe } from '../recipe.model';
@@ -17,6 +17,7 @@ export class RecipeEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private recipeService: RecipeService,
     private fb: FormBuilder
   ) { }
@@ -42,7 +43,7 @@ export class RecipeEditComponent implements OnInit {
       for (const ingredient of recipe.ingredients) {
         ingredients.push(
           this.fb.group({
-            name: this.fb.control(ingredient.name, this.getFormInputValidators(3)),
+            name: this.fb.control(ingredient.name, this.getFormInputValidators(4)),
             amount: this.fb.control(ingredient.amount, [Validators.required, Validators.pattern('^[1-9][0-9]*$')])
           }),
         );
@@ -58,20 +59,27 @@ export class RecipeEditComponent implements OnInit {
 
   onSave() {
     const newRecipe: Recipe = this.recipeForm.value;
+    const newRoute: any[] = ['../'];
     if (this.editMode) {
       this.recipeService.updateRecipe(this.id, newRecipe);
     } else {
-      this.recipeService.addRecipe(newRecipe);
+      const index = this.recipeService.addRecipe(newRecipe);
+      newRoute.push(index);
     }
+    this.router.navigate(newRoute, {relativeTo: this.route});
   }
 
   onAddIngredient() {
     (this.recipeForm.get('ingredients') as FormArray).push(
       this.fb.group({
-        name: this.fb.control(null, this.getFormInputValidators(3)),
-        amount: this.fb.control(null, [Validators.required, Validators.min(1)])
+        name: this.fb.control(null, this.getFormInputValidators(4)),
+        amount: this.fb.control(null, [Validators.required, Validators.pattern('^[1-9][0-9]*$')])
       })
     );
+  }
+
+  onClear() {
+    this.recipeForm.reset();
   }
 
   getFormInputValidators(min: number): any[] {
