@@ -66,7 +66,7 @@ export class RecipeEditComponent implements OnInit {
       const index = this.recipeService.addRecipe(newRecipe);
       newRoute.push(index);
     }
-    this.router.navigate(newRoute, {relativeTo: this.route});
+    this.router.navigate(['recipes']);
   }
 
   onAddIngredient() {

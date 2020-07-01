@@ -27,7 +27,8 @@
             type="text"
             id="name"
             class="form-control"
-            formControlName="name">
+            formControlName="name"
+            #name>
             <p
               class="help-block"
               style="color: red;"
@@ -50,7 +51,8 @@
             type="text"
             id="imagePath"
             class="form-control"
-            formControlName="imagePath">
+            formControlName="imagePath"
+            #imagePath>
             <p
               class="help-block"
               style="color: red;"
@@ -62,7 +64,7 @@
       <!-- image view -->
       <div class="row">
         <div class="col-xs-12">
-          <img src="" alt="" class="img-responsive">
+          <img [src]="imagePath.value" [alt]="name.value" class="img-responsive">
         </div>
       </div>
       <!-- Description -->
