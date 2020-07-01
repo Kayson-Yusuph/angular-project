@@ -69,13 +69,13 @@ export class RecipeEditComponent implements OnInit {
     (this.recipeForm.get('ingredients') as FormArray).push(
       this.fb.group({
         name: this.fb.control(null, this.getFormInputValidators(3)),
-        amount: this.fb.control(null, [Validators.required, Validators.pattern('^[1-9][0-9]*$')])
+        amount: this.fb.control(null, [Validators.required, Validators.min(1)])
       })
     );
   }
 
   getFormInputValidators(min: number): any[] {
-    return [Validators.required, Validators.minLength(min)/*, Validators.pattern('^[A-Za-z0-9]+$')*/];
+    return [Validators.required, Validators.minLength(min), Validators.pattern(/^[\w\s]+$/)];
   }
 
   onRemoveIngredient(index: number) {

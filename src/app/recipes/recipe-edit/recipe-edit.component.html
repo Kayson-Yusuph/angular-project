@@ -7,8 +7,7 @@
           <button
             class="btn btn-success form-control"
             type="submit"
-            [disabled]="recipeForm.invalid"
-            >Save</button>
+            [disabled]="!recipeForm.valid"            >Save</button>
         </div>
         <div class="col-xs-3">
           <button
@@ -27,6 +26,18 @@
             id="name"
             class="form-control"
             formControlName="name">
+            <p
+              class="help-block"
+              style="color: red;"
+              *ngIf="recipeForm.get('name').hasError('required') && recipeForm.get('name').touched"
+              > Name field is required!
+            </p>
+            <p
+              class="help-block"
+              style="color: red;"
+              *ngIf="recipeForm.get('name').hasError('minlength') && recipeForm.get('name').touched"
+              > Name must have at least {{ recipeForm.get('name').errors['minlength']['requiredLength']}} characters length got {{ recipeForm.get('name').errors['minlength']['actualLength']}} character(s)
+            </p>
         </div>
       </div>
       <!-- image path -->
@@ -38,6 +49,12 @@
             id="imagePath"
             class="form-control"
             formControlName="imagePath">
+            <p
+              class="help-block"
+              style="color: red;"
+              *ngIf="recipeForm.get('imagePath').hasError('required') && recipeForm.get('imagePath').touched"
+              > Image path field is required!
+            </p>
         </div>
       </div>
       <!-- image view -->
@@ -56,6 +73,19 @@
             class="form-control"
             rows="6"
             formControlName="description"></textarea>
+            <p
+              class="help-block"
+              style="color: red;"
+              *ngIf="recipeForm.get('description').hasError('required') && recipeForm.get('description').touched"
+              >
+              Description field is required!
+            </p>
+            <p
+              class="help-block"
+              style="color: red;"
+              *ngIf="recipeForm.get('description').hasError('minlength') && recipeForm.get('description').touched"
+              > Description must have at least {{ recipeForm.get('description').errors['minlength']['requiredLength']}} characters
+            </p>
         </div>
       </div>
       <!-- Ingredients -->
@@ -69,10 +99,33 @@
                 class="form-control"
                 formControlName="name"
                 >
+                <p
+                  class="help-block"
+                style="color: red;"
+                  *ngIf="ingredientCtrl.get('name').hasError('required') && ingredientCtrl.get('name').touched"
+                  >Name field is required!
+                </p>
+                <p class="help-block"
+                style="color: red;"
+                  *ngIf="ingredientCtrl.get('name').hasError('minlength') && ingredientCtrl.get('name').touched"
+                  > Name must have at least {{ ingredientCtrl.get('name').errors['minlength']['requiredLength']}} characters length
+                </p>
+                <p
+                  class="help-block"
+                  style="color: red;"
+                  *ngIf="ingredientCtrl.get('amount').hasError('required') && ingredientCtrl.get('amount').touched && ingredientCtrl.get('name').valid"
+                  >Amount field is required!
+                </p>
+                <p
+                  class="help-block"
+                  style="color: red;"
+                  *ngIf="ingredientCtrl.get('amount').hasError('pattern') && ingredientCtrl.get('amount').touched && ingredientCtrl.get('name').valid"
+                  > Amount must be greater than 0
+                </p>
             </div>
             <div class="col-xs-2">
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 formControlName="amount"
                 >
