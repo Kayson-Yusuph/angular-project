@@ -9,6 +9,7 @@ import { ShoppingListEditComponent } from './shopping-list/shopping-list-edit/sh
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipesResolverService } from './services/recipes-resolver.service';
+import { AuthComponent } from './auth/auth.component';
 
 const appRoutes: Routes = [
   {
@@ -25,7 +26,8 @@ const appRoutes: Routes = [
       { path: ':id/edit', component: ShoppingListEditComponent },
     ]
   },
-  { path: 'not-found', component: ErrorPageComponent, data: {error: 'Page not found'}},
+  { path: 'not-found', component: ErrorPageComponent, data: { error: 'Page not found' } },
+  { path: 'auth', component: AuthComponent },
   { path: '**', redirectTo: 'not-found' },
 ];
 

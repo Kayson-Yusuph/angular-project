@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-xs-12">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-12 col-md-6 offset-md-3">
+          <label for="email">E-Mail</label>
+          <input
+          class="form-control"
+          autocomplete="off"
+          type="text"
+          id="email"
+          name="email"
+          ngModel
+          required
+          email
+          >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-6 offset-md-3">
+          <label for="password">Password</label>
+          <input
+          class="form-control"
+          type="password"
+          id="password"
+          name="password"
+          ngModel
+          required
+          >
+        </div>
+      </div>
+      <br>
+      <div>
+        <button type="submit" class="btn btn-primary" [disabled]="!f.valid">{{isLogin? 'Login' : 'Sign Up'}}</button> |
+        <button type="button" class="btn btn-primary" (click)="onSwitch()">Switch to {{isLogin? 'Sign Up': 'Login'}}</button>
+      </div>
+    </div>
+  </form>
+  </div>
+</div>
