@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { DataStoreService } from '../services/data-store.service';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -8,4 +10,10 @@ import { Component } from '@angular/core';
 
 
 export class HeaderComponent {
+
+  constructor( private dataStoreService: DataStoreService ) {}
+
+  onSave() {
+    this.dataStoreService.storeRecipes();
+  }
 }
