@@ -18,6 +18,10 @@ export class HeaderComponent {
   }
 
   onFetch() {
-    this.dataStoreService.fetchRecipes();
+    this.dataStoreService.fetchRecipes()
+      .subscribe((res) => {
+    }, (error) => {
+      console.error(error);
+    });
   }
 }
