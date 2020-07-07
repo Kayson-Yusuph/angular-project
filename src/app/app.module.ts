@@ -19,6 +19,7 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeService } from './services/recipes.service';
 import { AuthComponent } from './auth/auth.component';
+import { LoaderComponent } from './shared/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { AuthComponent } from './auth/auth.component';
     RecipeEditComponent,
     ErrorPageComponent,
     RecipeStartComponent,
-    AuthComponent
+    AuthComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
