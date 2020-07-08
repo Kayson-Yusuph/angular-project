@@ -4,9 +4,9 @@
       <p> {{ error }} </p>
     </div>
     <div *ngIf="isLoading">
-      <app-loader></app-loader>
+      <app-loader [loadingText]="loadingText"></app-loader>
     </div>
-  <form #f="ngForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)" *ngIf="!isLoading">
     <div class="form-group">
           <label for="email">E-Mail</label>
           <input
@@ -27,6 +27,7 @@
           name="password"
           ngModel
           required
+          minlength="6"
           >
         </div>
       <br>
