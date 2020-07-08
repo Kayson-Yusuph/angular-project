@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 
@@ -8,24 +8,41 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent {
-  isLogin = true;
+  isLoginMode = true;
+  isLoading = false;
+  error = '';
 
-  constructor(private authService: AuthService) {}
+  @ViewChild('f') signUpForm: NgForm;
 
-  onSubmit(form: NgForm) {
-    if(this.isLogin) {
+  constructor(private authService: AuthService) { }
+
+  onSubmit() {
+    if (!this.signUpForm.valid) {
+      return;
+    }
+    this.isLoading = true;
+    if (this.isLoginMode) {
       // ...
     } else {
-      this.authService.signUp(form.value.email, form.value.password)
-          .subscribe(res=> {
-            console.log(res);
-          },(error) => {
-            console.error(error);
-          });
+      const { email, password } = this.signUpForm.value;
+      this.authService.signUp(email, password)
+        .subscribe(res => {
+          console.log(res);
+          this.isLoading = false;
+          this.onClear();
+        }, (errorMessage) => {
+          this.isLoading = false;
+          this.error = errorMessage;
+        });
     }
   }
 
+  onClear() {
+    this.signUpForm.reset();
+  }
+
   onSwitch() {
-    this.isLogin = !this.isLogin;
+    this.onClear();
+    this.isLoginMode = !this.isLoginMode;
   }
 }

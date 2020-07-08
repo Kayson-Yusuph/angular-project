@@ -1,9 +1,13 @@
 <div class="row">
-  <div class="col-xs-12">
-  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+  <div class="col-xs-12 col-md-4 col-md-offset-4">
+    <div class="alert alert-danger" *ngIf="error && !isLoading">
+      <p> {{ error }} </p>
+    </div>
+    <div *ngIf="isLoading">
+      <app-loader></app-loader>
+    </div>
+  <form #f="ngForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
     <div class="form-group">
-      <div class="row">
-        <div class="col-12 col-md-6 offset-md-3">
           <label for="email">E-Mail</label>
           <input
           class="form-control"
@@ -15,10 +19,6 @@
           required
           email
           >
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 col-md-6 offset-md-3">
           <label for="password">Password</label>
           <input
           class="form-control"
@@ -29,13 +29,11 @@
           required
           >
         </div>
-      </div>
       <br>
       <div>
-        <button type="submit" class="btn btn-primary" [disabled]="!f.valid">{{isLogin? 'Login' : 'Sign Up'}}</button> |
-        <button type="button" class="btn btn-primary" (click)="onSwitch()">Switch to {{isLogin? 'Sign Up': 'Login'}}</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!f.valid">{{isLoginMode? 'Login' : 'Sign Up'}}</button> |
+        <button type="button" class="btn btn-primary" (click)="onSwitch()">Switch to {{isLoginMode? 'Sign Up': 'Login'}}</button>
       </div>
-    </div>
   </form>
   </div>
 </div>
