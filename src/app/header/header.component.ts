@@ -23,8 +23,6 @@ ngOnInit() {
   this.authService.user.subscribe(user => {
     if (user) {
       this.isLogin = true;
-    } else {
-      this.router.navigate(['/auth']);
     }
   });
 }

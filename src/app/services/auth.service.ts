@@ -32,14 +32,14 @@ export class AuthService {
           password,
           returnSecureToken: true
         }).pipe(catchError(this.handleError),
-        tap((resData) => {
-          this.handleUserState(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn
-          );
-        }));
+          tap((resData) => {
+            this.handleUserState(
+              resData.email,
+              resData.localId,
+              resData.idToken,
+              +resData.expiresIn
+            );
+          }));
   }
 
   login(email: string, password: string) {
@@ -60,6 +60,21 @@ export class AuthService {
           }));
   }
 
+  autoLogin() {
+    const userData: {
+      id: string,
+      email: string,
+      _token: string,
+      _tokenExpirationDate: string
+    } = JSON.parse(localStorage.getItem('userData'));
+    if(!userData._tokenExpirationDate) {
+      return;
+    }
+    const lDate = new Date(userData._tokenExpirationDate);
+    const lUser = new User(userData.email, userData.id, userData._token, lDate);
+    this.user.next(lUser);
+  }
+
   logout() {
     this.user.next(null);
     this.router.navigate(['/auth']);
@@ -67,7 +82,7 @@ export class AuthService {
 
 
 
-  private handleUserState( email: string, userId: string, token: string, expiresIn: number) {
+  private handleUserState(email: string, userId: string, token: string, expiresIn: number) {
     const expirationDate = new Date(new Date().getTime() + (expiresIn * 1000));
     const newUser = new User(
       email,
@@ -77,6 +92,7 @@ export class AuthService {
     );
     this.token = newUser.token;
     this.user.next(newUser);
+    localStorage.setItem('userData', JSON.stringify(newUser));
   }
 
   private handleError(errorRes: HttpErrorResponse) {
