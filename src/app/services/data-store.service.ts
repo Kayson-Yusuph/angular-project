@@ -4,7 +4,7 @@ import { map, tap, take, exhaustMap } from 'rxjs/operators';
 
 import { RecipeService } from './recipes.service';
 import { Recipe } from '../recipes/recipe.model';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class DataStoreService {

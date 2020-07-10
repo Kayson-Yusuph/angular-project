@@ -10,10 +10,14 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipesResolverService } from './services/recipes-resolver.service';
 import { AuthComponent } from './auth/auth.component';
+import { AuthGuardService } from './auth/auth.guard';
 
 const appRoutes: Routes = [
   {
-    path: 'recipes', component: RecipesComponent, children: [
+    path: 'recipes',
+    canActivate: [AuthGuardService],
+    component: RecipesComponent,
+    children: [
       { path: '', component: RecipeStartComponent },
       { path: 'new', component: RecipeEditComponent },
       { path: ':id', component: RecipeDetailComponent, resolve: [RecipesResolverService] },
