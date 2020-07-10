@@ -58,7 +58,6 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onSave() {
-    console.log('Saving!');
     const newRecipe: Recipe = this.recipeForm.value;
     if (this.editMode) {
       this.recipeService.updateRecipe(this.id, newRecipe);
