@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { DataStoreService } from '../services/data-store.service';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -18,14 +18,12 @@ export class HeaderComponent implements OnInit {
     private dataStoreService: DataStoreService,
     private authService: AuthService,
     private router: Router
-  ) {}
-ngOnInit() {
-  this.authService.user.subscribe(user => {
-    if (user) {
-      this.isLogin = true;
-    }
-  });
-}
+  ) { }
+  ngOnInit() {
+    this.authService.user.subscribe(user => {
+      this.isLogin = !!user;
+    });
+  }
 
   onSave() {
     this.dataStoreService.storeRecipes();
@@ -34,21 +32,17 @@ ngOnInit() {
   onFetch() {
     this.dataStoreService.fetchRecipes()
       .subscribe((res) => {
-    }, (error) => {
-      console.error(error);
-    });
+      }, (error) => {
+        console.error(error);
+      });
   }
 
   onLoginLogout() {
-    if (!this.isLogin) {
+    if (this.isLogin) {
       this.authService.logout();
-    } else {
       this.isLogin = false;
+    } else {
       this.router.navigate(['/auth']);
     }
-  }
-
-  logout() {
-    this.authService.user.next(null);
   }
 }
