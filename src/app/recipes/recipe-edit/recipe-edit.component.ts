@@ -58,13 +58,12 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onSave() {
+    console.log('Saving!');
     const newRecipe: Recipe = this.recipeForm.value;
-    const newRoute: any[] = ['../'];
     if (this.editMode) {
       this.recipeService.updateRecipe(this.id, newRecipe);
     } else {
       const index = this.recipeService.addRecipe(newRecipe);
-      newRoute.push(index);
     }
     this.router.navigate(['recipes']);
   }
