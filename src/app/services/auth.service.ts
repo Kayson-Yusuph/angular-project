@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
+
 import { User } from '../auth/user.model';
 
 export interface AuthModel {
@@ -20,7 +22,7 @@ export class AuthService {
   user = new BehaviorSubject<User>(null);
   token: string = null;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   signUp(email: string, password: string) {
     return this.http
@@ -58,10 +60,10 @@ export class AuthService {
           }));
   }
 
-  // logout() {
-  //   return this.http
-  //     .post<AuthModel>('https://identitytoolkit.googleapis.com/v1/accounts:signOut?key=AIzaSyDV_sKTRt2lgA3PyHALaogkH6j5BPmlzlI');
-  // }
+  logout() {
+    this.user.next(null);
+    this.router.navigate(['/auth']);
+  }
 
 
 

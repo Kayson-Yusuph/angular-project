@@ -43,8 +43,7 @@ ngOnInit() {
 
   onLoginLogout() {
     if (!this.isLogin) {
-      this.router.navigate(['/auth']);
-      this.logout();
+      this.authService.logout();
     } else {
       this.isLogin = false;
       this.router.navigate(['/auth']);
