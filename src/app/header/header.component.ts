@@ -21,7 +21,11 @@ export class HeaderComponent implements OnInit {
   ) {}
 ngOnInit() {
   this.authService.user.subscribe(user => {
-    this.isLogin = true;
+    if (user) {
+      this.isLogin = true;
+    } else {
+      this.logout();
+    }
   });
 }
 
@@ -38,12 +42,16 @@ ngOnInit() {
   }
 
   onLoginLogout() {
-    if(!this.isLogin) {
-      this.router.navigate(['/auth']);
+    if (!this.isLogin) {
+      this.logout();
     } else {
       console.log('Logged out!');
       this.isLogin = false;
-      this.router.navigate(['/auth']);
+      this.logout();
     }
+  }
+
+  logout() {
+    this.router.navigate(['/auth']);
   }
 }

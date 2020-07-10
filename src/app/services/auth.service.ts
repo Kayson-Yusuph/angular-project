@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError, Subject } from 'rxjs';
+import { throwError, BehaviorSubject } from 'rxjs';
 import { User } from '../auth/user.model';
 
 export interface AuthModel {
@@ -17,7 +17,8 @@ export interface AuthModel {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  user = new Subject<User>();
+  user = new BehaviorSubject<User>(null);
+  token: string = null;
 
   constructor(private http: HttpClient) { }
 
@@ -62,6 +63,8 @@ export class AuthService {
   //     .post<AuthModel>('https://identitytoolkit.googleapis.com/v1/accounts:signOut?key=AIzaSyDV_sKTRt2lgA3PyHALaogkH6j5BPmlzlI');
   // }
 
+
+
   private handleUserState( email: string, userId: string, token: string, expiresIn: number) {
     const expirationDate = new Date(new Date().getTime() + (expiresIn * 1000));
     const newUser = new User(
@@ -70,6 +73,7 @@ export class AuthService {
       token,
       expirationDate
     );
+    this.token = newUser.token;
     this.user.next(newUser);
   }
 
