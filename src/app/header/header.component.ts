@@ -10,6 +10,7 @@ import { DataStoreService } from '../services/data-store.service';
 
 
 export class HeaderComponent {
+  isLogin = false;
 
   constructor( private dataStoreService: DataStoreService ) {}
 
@@ -23,5 +24,10 @@ export class HeaderComponent {
     }, (error) => {
       console.error(error);
     });
+  }
+
+  onLogout() {
+    this.isLogin = !this.isLogin;;
+    console.log('Logging out!');
   }
 }

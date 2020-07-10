@@ -57,6 +57,11 @@ export class AuthService {
           }));
   }
 
+  // logout() {
+  //   return this.http
+  //     .post<AuthModel>('https://identitytoolkit.googleapis.com/v1/accounts:signOut?key=AIzaSyDV_sKTRt2lgA3PyHALaogkH6j5BPmlzlI');
+  // }
+
   private handleUserState( email: string, userId: string, token: string, expiresIn: number) {
     const expirationDate = new Date(new Date().getTime() + (expiresIn * 1000));
     const newUser = new User(
