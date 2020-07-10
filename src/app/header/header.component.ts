@@ -24,7 +24,7 @@ ngOnInit() {
     if (user) {
       this.isLogin = true;
     } else {
-      this.logout();
+      this.router.navigate(['/auth']);
     }
   });
 }
@@ -43,15 +43,15 @@ ngOnInit() {
 
   onLoginLogout() {
     if (!this.isLogin) {
+      this.router.navigate(['/auth']);
       this.logout();
     } else {
-      console.log('Logged out!');
       this.isLogin = false;
-      this.logout();
+      this.router.navigate(['/auth']);
     }
   }
 
   logout() {
-    this.router.navigate(['/auth']);
+    this.authService.user.next(null);
   }
 }
