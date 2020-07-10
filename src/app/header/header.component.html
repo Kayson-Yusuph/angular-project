@@ -11,16 +11,16 @@
           ><a class="cr-pointer" routerLink="/recipes">recipe</a>
         </li>
         <li routerLinkActive="active"><a class="cr-pointer" routerLink="/shopping-list">Shopping List</a></li>
-        <li
+        <!-- <li
           routerLinkActive="active"
           *ngIf="!isLogin"
           ><a class="cr-pointer" routerLink="/auth">Authenticate</a>
-        </li>
+        </li> -->
       </ul>
       <ul
         class="nav navbar-nav navbar-right">
         <li>
-          <a class="cr-pointer" (click)="onLogout()">Logout</a>
+          <a class="cr-pointer" (click)="onLoginLogout()">{{isLogin ? 'Logout' : 'Login'}}</a>
         </li>
         <li class="dropdown" appDropdown *ngIf="isLogin">
           <a class="cr-pointer dropdown-toggle">Manage Data <span class="caret"></span></a>
