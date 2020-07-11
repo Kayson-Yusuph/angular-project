@@ -117,7 +117,7 @@ export class AuthService {
     console.error(errorRes);
     let errorMessage = 'An error occurred!';
     if (!errorRes ?.error ?.error ?.message) {
-      throwError(errorMessage);
+      return throwError(errorMessage);
     }
     switch (errorRes.error.error.message) {
       case 'EMAIL_EXISTS':
