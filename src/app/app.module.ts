@@ -22,6 +22,8 @@ import { AuthComponent } from './auth/auth.component';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { AlertComponent } from './shared/alert/alert.component';
+import { PlaceHolderDirective } from './shared/placeholder.directive';
+import { Alert } from 'selenium-webdriver';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,8 @@ import { AlertComponent } from './shared/alert/alert.component';
     RecipeStartComponent,
     AuthComponent,
     LoaderComponent,
-    AlertComponent
+    AlertComponent,
+    PlaceHolderDirective
   ],
   imports: [
     BrowserModule,
@@ -48,6 +51,9 @@ import { AlertComponent } from './shared/alert/alert.component';
     ReactiveFormsModule,
     AppRoutingModule
   ],
+  // entryComponents: [
+  //   AlertComponent
+  // ],
   providers: [ShoppingListService, RecipeService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
   bootstrap: [AppComponent]
 })
