@@ -46,4 +46,8 @@ export class AuthComponent {
   onSwitch() {
     this.isLoginMode = !this.isLoginMode;
   }
+
+  onClose() {
+    this.error = null;
+  }
 }
