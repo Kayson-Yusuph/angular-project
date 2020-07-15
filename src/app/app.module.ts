@@ -38,8 +38,8 @@ import { RecipesModule } from './recipes/recipes.module';
     FormsModule,
     ReactiveFormsModule,
     // app modules
+    RecipesModule,
     AppRoutingModule,
-    RecipesModule
   ],
   // entryComponents: [
   //   AlertComponent
