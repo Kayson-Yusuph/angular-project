@@ -17,7 +17,6 @@ import { PlaceHolderDirective } from './shared/placeholder.directive';
 import { RecipeService } from './services/recipes.service';
 import { RecipesModule } from './recipes/recipes.module';
 import { ShoppingListModule } from './shopping-list/shopping-list.module';
-import { ShoppingListRoutingModule } from './shopping-list/shopping-list-routing.module';
 
 @NgModule({
   declarations: [
@@ -38,7 +37,6 @@ import { ShoppingListRoutingModule } from './shopping-list/shopping-list-routing
     // app modules
     RecipesModule,
     ShoppingListModule,
-    ShoppingListRoutingModule,
     AppRoutingModule,
   ],
   // entryComponents: [
