@@ -9,12 +9,7 @@ import { AuthComponent } from './auth/auth.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'recipes', pathMatch: 'full'},
-  {
-    path: 'shopping-list', component: ShoppingListComponent, children: [
-      { path: ':id/edit', component: ShoppingListEditComponent },
-    ]
-  },
-  { path: 'not-found', component: ErrorPageComponent, data: { error: 'Page not found' } },
+    { path: 'not-found', component: ErrorPageComponent, data: { error: 'Page not found' } },
   { path: 'auth', component: AuthComponent },
   { path: '**', redirectTo: 'not-found' },
 ];
