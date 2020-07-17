@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { DropdownDirective } from './dropdown.directive';
+import { DropDownDirective } from './drop-down.directive';
 import { ErrorPageComponent } from '../error-page/error-page.component';
 import { LoaderComponent } from './loader/loader.component';
 import { AlertComponent } from './alert/alert.component';
@@ -10,7 +10,7 @@ import { PlaceHolderDirective } from './placeholder.directive';
 
 @NgModule({
     declarations: [
-        DropdownDirective,
+        DropDownDirective,
         ErrorPageComponent,
         LoaderComponent,
         AlertComponent,
@@ -18,7 +18,7 @@ import { PlaceHolderDirective } from './placeholder.directive';
     ],
     imports: [CommonModule, FormsModule],
     exports: [
-        DropdownDirective,
+        DropDownDirective,
         ErrorPageComponent,
         LoaderComponent,
         AlertComponent,

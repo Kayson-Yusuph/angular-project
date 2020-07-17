@@ -1,9 +1,9 @@
 import { Directive, ElementRef, Renderer2, HostListener, HostBinding } from '@angular/core';
 
 @Directive({
-  selector: '[appDropdown]'
+  selector: '[appDropDown]'
 })
-export class DropdownDirective {
+export class DropDownDirective {
   clicked = false;
   @HostBinding('class.open') isOpen = false;
   @HostListener('click') click() {

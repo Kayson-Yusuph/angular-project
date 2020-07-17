@@ -22,7 +22,7 @@
         <li>
           <a class="cr-pointer" (click)="onLoginLogout()">{{isLogin ? 'Logout' : 'Login'}}</a>
         </li>
-        <li class="dropdown" appDropdown *ngIf="isLogin">
+        <li class="dropdown" appDropDown *ngIf="isLogin">
           <a class="cr-pointer dropdown-toggle">Manage Data <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a class="cr-pointer" (click)="onSave()">Saving Data</a></li>
