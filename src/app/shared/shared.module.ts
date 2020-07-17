@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { DropdownDirective } from './dropdown.directive';
 import { ErrorPageComponent } from '../error-page/error-page.component';
@@ -13,16 +14,17 @@ import { PlaceHolderDirective } from './placeholder.directive';
         ErrorPageComponent,
         LoaderComponent,
         AlertComponent,
-        PlaceHolderDirective
+        PlaceHolderDirective,
     ],
-    imports: [CommonModule],
+    imports: [CommonModule, FormsModule],
     exports: [
         DropdownDirective,
         ErrorPageComponent,
         LoaderComponent,
         AlertComponent,
         PlaceHolderDirective,
-        CommonModule
+        FormsModule,
+        CommonModule,
     ]
 })
 export class SharedModule { }
