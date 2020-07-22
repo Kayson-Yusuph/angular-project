@@ -22,6 +22,10 @@ export class RecipeEditComponent implements OnInit {
     private fb: FormBuilder
   ) { }
 
+  get ingredientContols() {
+    return (this.recipeForm.get('ingredients') as FormArray).controls;
+  }
+
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       this.id = +params.id;
