@@ -120,7 +120,6 @@ export class AuthService {
   private handleError(errorRes: HttpErrorResponse) {
     console.error(errorRes);
     let errorMessage = 'An error occurred!';
-    console.log(errorRes);
     if (errorRes.error && errorRes.error.error && errorRes.error.error.message) {
       return throwError(errorMessage);
     }
