@@ -8,6 +8,7 @@ import { HeaderComponent } from './header/header.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core.module';
+import { LoggingService } from './services/logging.service';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { CoreModule } from './core.module';
     CoreModule,
     AppRoutingModule,
   ],
+  // providers: [LoggingService],
   // entryComponents: [
   //   AlertComponent
   // ],
