@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
-import { LoggingService } from './services/logging.service';
 
 @NgModule({
   providers: [
@@ -10,8 +9,7 @@ import { LoggingService } from './services/logging.service';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
       multi: true
-    },
-    // LoggingService
+    }
   ],
 })
 export class CoreModule { }
