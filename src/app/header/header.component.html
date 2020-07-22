@@ -8,25 +8,38 @@
         <li
           routerLinkActive="active"
           *ngIf="isLogin"
-          ><a class="cr-pointer" routerLink="/recipes">recipe</a>
+        ><a
+            class="cr-pointer"
+            routerLink="/recipes"
+          >recipe</a>
         </li>
-        <li routerLinkActive="active"><a class="cr-pointer" routerLink="/shopping-list">Shopping List</a></li>
-        <!-- <li
-          routerLinkActive="active"
-          *ngIf="!isLogin"
-          ><a class="cr-pointer" routerLink="/auth">Authenticate</a>
-        </li> -->
+        <li routerLinkActive="active"><a
+            class="cr-pointer"
+            routerLink="/shopping-list"
+          >Shopping List</a></li>
       </ul>
-      <ul
-        class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-right">
         <li>
-          <a class="cr-pointer" (click)="onLoginLogout()">{{isLogin ? 'Logout' : 'Login'}}</a>
+          <a
+            class="cr-pointer"
+            (click)="onLoginLogout()"
+          >{{isLogin ? 'Logout' : 'Login'}}</a>
         </li>
-        <li class="dropdown" appDropDown *ngIf="isLogin">
+        <li
+          class="dropdown"
+          appDropDown
+          *ngIf="isLogin"
+        >
           <a class="cr-pointer dropdown-toggle">Manage Data <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a class="cr-pointer" (click)="onSave()">Saving Data</a></li>
-            <li><a class="cr-pointer" (click)="onFetch()">Fetching Data</a></li>
+            <li><a
+                class="cr-pointer"
+                (click)="onSave()"
+              >Saving Data</a></li>
+            <li><a
+                class="cr-pointer"
+                (click)="onFetch()"
+              >Fetching Data</a></li>
           </ul>
         </li>
       </ul>

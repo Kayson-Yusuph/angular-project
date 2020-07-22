@@ -8,10 +8,14 @@
     <div *ngIf="isLoading">
       <app-loader [loadingText]="loadingText"></app-loader>
     </div>
-  <form #f="ngForm" (ngSubmit)="onSubmit(f)" *ngIf="!isLoading">
-    <div class="form-group">
-          <label for="email">E-Mail</label>
-          <input
+    <form
+      #f="ngForm"
+      (ngSubmit)="onSubmit(f)"
+      *ngIf="!isLoading"
+    >
+      <div class="form-group">
+        <label for="email">E-Mail</label>
+        <input
           class="form-control"
           autocomplete="off"
           type="text"
@@ -20,9 +24,9 @@
           ngModel
           required
           email
-          >
-          <label for="password">Password</label>
-          <input
+        >
+        <label for="password">Password</label>
+        <input
           class="form-control"
           type="password"
           id="password"
@@ -31,13 +35,20 @@
           required
           minlength="6"
           (keydown.enter)="onSubmit(f)"
-          >
-        </div>
+        >
+      </div>
       <br>
       <div>
-        <button type="submit" class="btn btn-primary" [disabled]="!f.valid">{{isLoginMode? 'Login' : 'Sign Up'}}</button> |
-        <button type="button" class="btn btn-primary" (click)="onSwitch()">Switch to {{isLoginMode? 'Sign Up': 'Login'}}</button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!f.valid"
+        >{{isLoginMode? 'Login' : 'Sign Up'}}</button> | <button
+          type="button"
+          class="btn btn-primary"
+          (click)="onSwitch()"
+        >Switch to {{isLoginMode? 'Sign Up': 'Login'}}</button>
       </div>
-  </form>
+    </form>
   </div>
 </div>
