@@ -75,10 +75,14 @@ export class AuthService {
     if (!userData._token) {
       return;
     }
-    const duration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+    let duration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
     const lDate = new Date(userData._tokenExpirationDate);
     const lUser = new User(userData.email, userData.id, userData._token, lDate);
     this.user.next(lUser);
+    const expTime = 10 * 60 * 1000;
+    if (duration > expTime) {
+      duration = expTime;
+    }
     this.autoLogout(duration);
   }
 
@@ -116,7 +120,8 @@ export class AuthService {
   private handleError(errorRes: HttpErrorResponse) {
     console.error(errorRes);
     let errorMessage = 'An error occurred!';
-    if (!errorRes ?.error ?.error ?.message) {
+    console.log(errorRes);
+    if (errorRes.error && errorRes.error.error && errorRes.error.error.message) {
       return throwError(errorMessage);
     }
     switch (errorRes.error.error.message) {
