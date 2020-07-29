@@ -20,7 +20,7 @@ export interface AppState {
 }
 
 
-export function shoppingListReducer(state = initialState, action: shoppingListActions.AddIngredient | shoppingListActions.AddIngredients | shoppingListActions.DeleteIngredient | shoppingListActions.UpdateIngredient) {
+export function shoppingListReducer(state = initialState, action: shoppingListActions.ShoppingListTypes) {
   switch (action.type) {
     case shoppingListActions.ADD_INGREDIENT:
       return {
@@ -34,18 +34,35 @@ export function shoppingListReducer(state = initialState, action: shoppingListAc
       }
     case shoppingListActions.UPDATE_INGREDIENT:
       const oldIgs = [...state.ingredients];
-      oldIgs.splice(action.payload.index, 1);
+      oldIgs.splice(state.editedIngredientIndex, 1);
       oldIgs.push(action.payload.ingredient);
       return {
         ...state,
-        ingredients: oldIgs
+        ingredients: oldIgs,
+        editedIngredient: null,
+        editedIngredientIndex: -1
       }
     case shoppingListActions.DELETE_INGREDIENT:
       const ingredients = [...state.ingredients];
-      ingredients.splice(action.payload.index, 1);
+      ingredients.splice(state.editedIngredientIndex, 1);
       return {
         ...state,
-        ingredients
+        ingredients,
+        editedIngredient: null,
+        editedIngredientIndex: -1
+      }
+    case shoppingListActions.START_EDIT:
+      console.log(action.payload);
+      return {
+        ...state,
+        editedIngredient: { ...state.ingredients[action.payload] },
+        editedIngredientIndex: action.payload
+      }
+    case shoppingListActions.STOP_EDIT:
+      return {
+        ...state,
+        editedIngredient: null,
+        editedIngredientIndex: -1,
       }
     default:
       return state;
