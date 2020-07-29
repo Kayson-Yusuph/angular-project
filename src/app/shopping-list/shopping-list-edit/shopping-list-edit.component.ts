@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { Ingredient } from '../../shared/ingredient.model';
-import { ShoppingListService } from '../../services/shopping-list.service';
 import * as ShoppingListAction from '../store/shopping-list.actions';
 import * as fromShoppingList from '../store/shopping-list.reducer';
 
@@ -21,7 +20,6 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
   isAdd = true;
 
   constructor(
-    private sLService: ShoppingListService,
     private store: Store<fromShoppingList.AppState>
     ) { }
 
@@ -46,16 +44,13 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
     const ingredient = new Ingredient(name, amount);
     if (this.isAdd) {
       this.store.dispatch(new ShoppingListAction.AddIngredient({ingredient}));
-      // this.sLService.addIngredient(ingredient);
     } else {
       this.store.dispatch(new ShoppingListAction.UpdateIngredient({ ingredient }));
-      // this.sLService.updateIngredient(this.igIndex, ingredient);
     }
     this.onClear();
   }
 
   onDelete() {
-    // this.sLService.deleteIngredient(this.igIndex);
     this.store.dispatch(new ShoppingListAction.DeleteIngredient());
     this.onClear();
   }
