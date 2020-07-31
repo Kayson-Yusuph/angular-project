@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { Recipe } from '../recipes/recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
 import { AddIngredients } from '../shopping-list/store/shopping-list.actions';
-import * as fromShoppingList from '../shopping-list/store/shopping-list.reducer';
 import { AppState } from '../store/app.reducers';
 
 @Injectable({providedIn: 'root'})

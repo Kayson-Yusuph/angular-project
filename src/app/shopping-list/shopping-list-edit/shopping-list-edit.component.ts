@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 
 import { Ingredient } from '../../shared/ingredient.model';
 import * as ShoppingListAction from '../store/shopping-list.actions';
-import * as fromShoppingList from '../store/shopping-list.reducer';
 import { AppState } from '../../store/app.reducers';
 
 @Component({
