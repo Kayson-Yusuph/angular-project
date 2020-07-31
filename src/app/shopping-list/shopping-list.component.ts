@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { Ingredient } from '../shared/ingredient.model';
 import * as fromShoppingList from './store/shopping-list.reducer';
 import * as ShoppingListActions from './store/shopping-list.actions';
+import { AppState } from '../store/app.reducers';
 
 @Component({
   selector: 'app-shopping-list',
@@ -18,7 +19,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   private igSubscriptions: Subscription[] = [];
 
   constructor(
-    private store: Store<fromShoppingList.AppState>
+    private store: Store<AppState>
     ) { }
 
   ngOnInit() {
