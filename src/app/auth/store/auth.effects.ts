@@ -28,13 +28,12 @@ export class AuthEffects {
             const expirationDate = new Date(
               new Date().getTime() + +resData.expiresIn * 1000
             );
-            return of(
-              new authActions.Login({
+            return new authActions.LoginSuccess({
                 id: resData.localId,
                 email: resData.email,
                 token: resData.idToken,
                 expDate: expirationDate,
-              })
+              }
             );
           }),
           catchError((error) => {

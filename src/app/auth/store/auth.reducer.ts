@@ -3,17 +3,22 @@ import * as AuthActions from './auth.action';
 
 export interface State {
   user: User;
+  loading: boolean;
+  authError: string;
 }
 
 const initialState: State = {
   user: null,
+  loading: false,
+  authError: null
 };
 export function authReducers(
   state = initialState,
   action: AuthActions.AuthActionTypes
 ) {
   switch (action.type) {
-    case AuthActions.LOGIN:
+    case AuthActions.LOGIN_SUCCESS:
+      console.log('A');
       const user = new User(
         action.payload.email,
         action.payload.id,
@@ -23,12 +28,28 @@ export function authReducers(
       return {
         ...state,
         user,
+        authError: null,
+        loading: false
       };
     case AuthActions.LOGOUT:
       return {
         ...state,
         user: null,
       };
+    case AuthActions.LOGIN_START:
+      console.log('b');
+      return {
+        ...state,
+        loading: true,
+        authError: null
+      };
+    case AuthActions.LOGIN_FAIL:
+      return {
+        ...state,
+        user: null,
+        loading: false,
+        authError: action.payload
+      }
     default:
       return state;
   }

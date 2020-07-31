@@ -97,7 +97,7 @@ export class AuthService {
     const lDate = new Date(userData._tokenExpirationDate);
     const lUser = new User(userData.email, userData.id, userData._token, lDate);
     this.store.dispatch(
-      new authActions.Login({
+      new authActions.LoginSuccess({
         id: userData.id,
         email: userData.email,
         token: userData._token,
@@ -140,7 +140,7 @@ export class AuthService {
     this.autoLogout(expiresIn * 1000);
     // this.user.next(newUser);
     this.store.dispatch(
-      new authActions.Login({
+      new authActions.LoginSuccess({
         id: userId,
         email,
         token,
