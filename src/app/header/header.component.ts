@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
 
 import { DataStoreService } from '../services/data-store.service';
 import { AuthService } from '../auth/auth.service';
+import { AppState } from '../store/app.reducers';
 
 @Component({
   selector: 'app-header',
@@ -17,10 +20,11 @@ export class HeaderComponent implements OnInit {
   constructor(
     private dataStoreService: DataStoreService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private store: Store<AppState>
   ) { }
   ngOnInit() {
-    this.authService.user.subscribe(user => {
+    this.store.select('auth').pipe(map((userData) => userData.user)).subscribe(user => {
       this.isLogin = !!user;
     });
   }
