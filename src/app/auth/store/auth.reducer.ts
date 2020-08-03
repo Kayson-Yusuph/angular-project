@@ -18,7 +18,6 @@ export function authReducers(
 ) {
   switch (action.type) {
     case AuthActions.LOGIN_SUCCESS:
-      console.log('A');
       const user = new User(
         action.payload.email,
         action.payload.id,
@@ -37,7 +36,6 @@ export function authReducers(
         user: null,
       };
     case AuthActions.LOGIN_START:
-      console.log('b');
       return {
         ...state,
         loading: true,
