@@ -37,40 +37,40 @@ export class AuthEffects {
             });
           }),
           catchError((errorRes) => {
-            console.log('Error: ', errorRes);
-            let errorMessage = 'An error occurred!';
-            if (
-              errorRes.error &&
-              errorRes.error.error &&
-              errorRes.error.error.message
-            ) {
-              switch (errorRes.error.error.message) {
-                case 'EMAIL_EXISTS':
-                  errorMessage = 'This email already exists!';
-                  break;
-                case 'EMAIL_NOT_FOUND':
-                  errorMessage = 'This email does not exists!';
-                  break;
-                case 'INVALID_PASSWORD':
-                  errorMessage = 'Incorrect password!';
-                  break;
-                case 'USER_DISABLED':
-                  errorMessage = 'This account has been disabled!';
-              }
-            }
-            return of(new authActions.LoginFail(errorMessage));
+            const error = this.handleError(errorRes);
+            return of( new authActions.LoginFail(error));
           })
         );
     })
   );
 
-  
+  signingUp = this.actions$.pipe(
+    ofType(authActions.SIGN_UP_SUCCESS),
+    switchMap((signUpData: authActions.SignUpStart) => {
+      const { email, password } = signUpData.payload;
+      return this.http
+        .post<AuthModel>(
+          `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`,
+          {
+            email,
+            password,
+            returnSecureToken: true,
+          }
+        )
+        .pipe(
+          map(() => {}),
+          catchError((errorRes) => {
+            const error = this.handleError(errorRes);
+            return of( new authActions.LoginFail(error));
+          })
+        );
+    })
+  );
 
   @Effect({ dispatch: false })
   loginSuccess = this.actions$.pipe(
-    ofType(authActions.LOGIN_SUCCESS),
+    ofType(authActions.LOGIN_SUCCESS, authActions.SIGN_UP_SUCCESS),
     tap(() => {
-      console.log('Login success!');
       this.router.navigate(['/']);
     })
   );
@@ -80,4 +80,28 @@ export class AuthEffects {
     private http: HttpClient,
     private router: Router
   ) {}
+
+  private handleError(errorRes) {
+    let errorMessage = 'An error occurred!';
+    if (
+      errorRes.error &&
+      errorRes.error.error &&
+      errorRes.error.error.message
+    ) {
+      switch (errorRes.error.error.message) {
+        case 'EMAIL_EXISTS':
+          errorMessage = 'This email already exists!';
+          break;
+        case 'EMAIL_NOT_FOUND':
+          errorMessage = 'This email does not exists!';
+          break;
+        case 'INVALID_PASSWORD':
+          errorMessage = 'Incorrect password!';
+          break;
+        case 'USER_DISABLED':
+          errorMessage = 'This account has been disabled!';
+      }
+    }
+    return errorMessage;
+  }
 }
