@@ -47,7 +47,19 @@ export function authReducers(
         user: null,
         loading: false,
         authError: action.payload
-      }
+      };
+    case AuthActions.SIGN_UP_SUCCESS:
+      return {
+        ...state
+      };
+    case AuthActions.SIGN_UP_sTART:
+      return {
+        ...state
+      };
+    case AuthActions.SIGN_UP_FAIL:
+      return {
+        ...state
+      };
     default:
       return state;
   }

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { of } from 'rxjs';
+import { Router } from '@angular/router';
 import { Actions, ofType, Effect } from '@ngrx/effects';
-import { switchMap, catchError, map } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { switchMap, catchError, map, tap } from 'rxjs/operators';
 
 import * as authActions from './auth.action';
 import { environment } from '../../../environments/environment';
@@ -29,19 +30,54 @@ export class AuthEffects {
               new Date().getTime() + +resData.expiresIn * 1000
             );
             return new authActions.LoginSuccess({
-                id: resData.localId,
-                email: resData.email,
-                token: resData.idToken,
-                expDate: expirationDate,
-              }
-            );
+              id: resData.localId,
+              email: resData.email,
+              token: resData.idToken,
+              expDate: expirationDate,
+            });
           }),
-          catchError((error) => {
-            return of();
+          catchError((errorRes) => {
+            console.log('Error: ', errorRes);
+            let errorMessage = 'An error occurred!';
+            if (
+              errorRes.error &&
+              errorRes.error.error &&
+              errorRes.error.error.message
+            ) {
+              switch (errorRes.error.error.message) {
+                case 'EMAIL_EXISTS':
+                  errorMessage = 'This email already exists!';
+                  break;
+                case 'EMAIL_NOT_FOUND':
+                  errorMessage = 'This email does not exists!';
+                  break;
+                case 'INVALID_PASSWORD':
+                  errorMessage = 'Incorrect password!';
+                  break;
+                case 'USER_DISABLED':
+                  errorMessage = 'This account has been disabled!';
+              }
+            }
+            return of(new authActions.LoginFail(errorMessage));
           })
         );
     })
   );
 
-  constructor(private actions$: Actions, private http: HttpClient) {}
+  
+
+  @Effect({ dispatch: false })
+  loginSuccess = this.actions$.pipe(
+    ofType(authActions.LOGIN_SUCCESS),
+    tap(() => {
+      console.log('Login success!');
+      this.router.navigate(['/']);
+    })
+  );
+
+  constructor(
+    private actions$: Actions,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 }

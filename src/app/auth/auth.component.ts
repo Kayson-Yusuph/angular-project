@@ -41,7 +41,9 @@ export class AuthComponent implements OnInit, OnDestroy {
       console.log(userState);
       this.isLoading = userState.loading;
       this.error = userState.authError;
-      this.showErrorAlert(this.error);
+      if(this.error) {
+        this.showErrorAlert(this.error);
+      }
     });
   }
 
@@ -90,15 +92,16 @@ export class AuthComponent implements OnInit, OnDestroy {
     const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(
       AlertComponent
     );
-
-    const hostViewContainerRef = this.alertHost.viewContainerRef;
-    hostViewContainerRef.clear();
-
-    const component = hostViewContainerRef.createComponent(alertCmpFactory);
-    component.instance.message = message;
-    this.alertSub = component.instance.closeAlert.subscribe(() => {
+    // if(this.alertHost) {
+      const hostViewContainerRef = this.alertHost.viewContainerRef;
       hostViewContainerRef.clear();
-    });
+
+      const component = hostViewContainerRef.createComponent(alertCmpFactory);
+      component.instance.message = message;
+      this.alertSub = component.instance.closeAlert.subscribe(() => {
+        hostViewContainerRef.clear();
+      });
+    // }
   }
 
   ngOnDestroy() {

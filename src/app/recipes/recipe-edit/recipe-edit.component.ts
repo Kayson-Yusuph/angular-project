@@ -22,7 +22,7 @@ export class RecipeEditComponent implements OnInit {
     private fb: FormBuilder
   ) { }
 
-  get ingredientContols() {
+  get ingredientControls() {
     return (this.recipeForm.get('ingredients') as FormArray).controls;
   }
 
