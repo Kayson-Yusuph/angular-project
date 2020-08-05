@@ -49,8 +49,17 @@ export function authReducers(
         authError: action.payload
       };
     case AuthActions.SIGN_UP_SUCCESS:
+      const newUser = new User(
+        action.payload.email,
+        action.payload.id,
+        action.payload.token,
+        action.payload.expDate
+      );
       return {
-        ...state
+        ...state,
+        user: newUser,
+        loading: false,
+        authError: null
       };
     case AuthActions.SIGN_UP_START:
       return {

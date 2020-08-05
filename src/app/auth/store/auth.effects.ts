@@ -59,9 +59,14 @@ export class AuthEffects {
           }
         )
         .pipe(
-          map(() => {
-            console.log('Done');
-            return null;
+          map((resData) => {
+            const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000);
+            return new authActions.SignUpSuccess({
+              id: resData.localId,
+              email: resData.email,
+              token: resData.idToken,
+              expDate: expirationDate,
+            });;
           }),
           catchError((errorRes: HttpErrorResponse) => {
             const error = this.handleError(errorRes);
@@ -84,6 +89,26 @@ export class AuthEffects {
     private http: HttpClient,
     private router: Router
   ) {}
+
+  private handleUserState(
+    email: string,
+    userId: string,
+    token: string,
+    expiresIn: number
+  ) {
+    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+    // const newUser = new User(email, userId, token, expirationDate);
+    // this.token = newUser.token;
+    // this.autoLogout(expiresIn * 1000);
+    // this.user.next(newUser);
+      return new authActions.LoginSuccess({
+        id: userId,
+        email,
+        token,
+        expDate: new Date(new Date().getTime() + expiresIn * 1000),
+      });
+    // localStorage.setItem('userData', JSON.stringify(newUser));
+  }
 
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = 'An error occurred!';
