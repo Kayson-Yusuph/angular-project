@@ -59,11 +59,12 @@ export class AuthComponent implements OnInit, OnDestroy {
       this.loadingText = 'Logging in...';
       // authObs = this.authService.login(email, password);
       this.store.dispatch(
-        new authActions.LoginStart({ email: email, password: password })
+        new authActions.LoginStart({ email, password })
       );
     } else {
       this.loadingText = 'Signing up...';
-      authObs = this.authService.signUp(email, password);
+      this.store.dispatch(new authActions.SignUpStart({email, password}))
+      // authObs = this.authService.signUp(email, password);
     }
     // authObs.subscribe(
     //   (res) => {

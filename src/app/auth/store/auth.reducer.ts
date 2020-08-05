@@ -52,13 +52,18 @@ export function authReducers(
       return {
         ...state
       };
-    case AuthActions.SIGN_UP_sTART:
+    case AuthActions.SIGN_UP_START:
       return {
-        ...state
+        ...state,
+        loading: true,
+        authError: null
       };
     case AuthActions.SIGN_UP_FAIL:
       return {
-        ...state
+        ...state,
+        user: null,
+        loading: false,
+        authError: action.payload
       };
     default:
       return state;

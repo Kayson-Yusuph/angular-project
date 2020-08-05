@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Actions, ofType, Effect } from '@ngrx/effects';
 import { of } from 'rxjs';
@@ -36,7 +36,7 @@ export class AuthEffects {
               expDate: expirationDate,
             });
           }),
-          catchError((errorRes) => {
+          catchError((errorRes: HttpErrorResponse) => {
             const error = this.handleError(errorRes);
             return of( new authActions.LoginFail(error));
           })
@@ -44,8 +44,9 @@ export class AuthEffects {
     })
   );
 
+  @Effect()
   signingUp = this.actions$.pipe(
-    ofType(authActions.SIGN_UP_SUCCESS),
+    ofType(authActions.SIGN_UP_START),
     switchMap((signUpData: authActions.SignUpStart) => {
       const { email, password } = signUpData.payload;
       return this.http
@@ -58,8 +59,11 @@ export class AuthEffects {
           }
         )
         .pipe(
-          map(() => {}),
-          catchError((errorRes) => {
+          map(() => {
+            console.log('Done');
+            return null;
+          }),
+          catchError((errorRes: HttpErrorResponse) => {
             const error = this.handleError(errorRes);
             return of( new authActions.LoginFail(error));
           })
@@ -81,7 +85,7 @@ export class AuthEffects {
     private router: Router
   ) {}
 
-  private handleError(errorRes) {
+  private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = 'An error occurred!';
     if (
       errorRes.error &&

@@ -4,7 +4,7 @@ export const LOGIN_START = '[Auth] Login Start';
 export const LOGIN_SUCCESS = '[Auth] Login Success';
 export const LOGOUT = '[Auth] Logout';
 export const LOGIN_FAIL = '[Auth] Login Fail';
-export const SIGN_UP_sTART = '[Auth] Sign up start';
+export const SIGN_UP_START = '[Auth] Sign up start';
 export const SIGN_UP_SUCCESS = '[Auth] Sign up success';
 export const SIGN_UP_FAIL = '[Auth] Sign up fail';
 
@@ -33,7 +33,7 @@ export class LoginFail implements Action {
 }
 
 export class SignUpStart implements Action {
-  readonly type = SIGN_UP_sTART;
+  readonly type = SIGN_UP_START;
 
   constructor(public payload: { email: string; password: string }) {}
 }
