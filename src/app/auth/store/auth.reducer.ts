@@ -23,7 +23,8 @@ export function authReducers(
         action.payload.id,
         action.payload.token,
         action.payload.expDate
-      );
+        );
+      localStorage.setItem('userData', JSON.stringify(user));
       return {
         ...state,
         user,
@@ -36,6 +37,7 @@ export function authReducers(
         user: null,
       };
     case AuthActions.LOGIN_START:
+      console.log('Login start reducer');
       return {
         ...state,
         loading: true,
@@ -55,6 +57,7 @@ export function authReducers(
         action.payload.token,
         action.payload.expDate
       );
+      localStorage.setItem('userData', JSON.stringify(newUser));
       return {
         ...state,
         user: newUser,
@@ -74,6 +77,11 @@ export function authReducers(
         loading: false,
         authError: action.payload
       };
+    case AuthActions.CLEAR_ERROR:
+      return {
+        ...state,
+        authError: null
+      }
     default:
       return state;
   }

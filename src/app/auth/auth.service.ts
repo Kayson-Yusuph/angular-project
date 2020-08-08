@@ -11,10 +11,10 @@ import * as appStore from '../store/app.reducers';
 import * as authActions from '../auth/store/auth.action';
 
 export interface AuthModel {
-  key: string;
+  key?: string;
   idToken: string;
   email: string;
-  refreshToken: string;
+  refreshToken?: string;
   expiresIn: string;
   localId: string;
   registered?: boolean;

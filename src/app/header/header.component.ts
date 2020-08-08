@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { DataStoreService } from '../services/data-store.service';
 import { AuthService } from '../auth/auth.service';
 import { AppState } from '../store/app.reducers';
+import * as authActions from '../auth/store/auth.action';
 
 @Component({
   selector: 'app-header',
@@ -43,7 +44,7 @@ export class HeaderComponent implements OnInit {
 
   onLoginLogout() {
     if (this.isLogin) {
-      this.authService.logout();
+      this.store.dispatch( new authActions.Logout());
       this.isLogin = false;
     } else {
       this.router.navigate(['/auth']);

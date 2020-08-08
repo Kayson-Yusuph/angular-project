@@ -15,6 +15,7 @@ export class AuthEffects {
   loggingIn = this.actions$.pipe(
     ofType(authActions.LOGIN_START),
     switchMap((loginData: authActions.LoginStart) => {
+      console.log('Login start');
       return this.http
         .post<AuthModel>(
           `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseAPIKey}`,
@@ -25,7 +26,8 @@ export class AuthEffects {
           }
         )
         .pipe(
-          map(this.handleUserState),
+          tap((data) => console.log('Tapped value', data)),
+          map(this.handleLoginUserState),
           catchError((errorRes: HttpErrorResponse) => {
             const error = this.handleError(errorRes);
             return of( new authActions.LoginFail(error));
@@ -49,7 +51,7 @@ export class AuthEffects {
           }
         )
         .pipe(
-          map(this.handleUserState),
+          map(this.handleSignUpUserState),
           catchError((errorRes: HttpErrorResponse) => {
             const error = this.handleError(errorRes);
             return of( new authActions.LoginFail(error));
@@ -66,13 +68,61 @@ export class AuthEffects {
     })
   );
 
+  @Effect()
+  autoLogin = this.actions$.pipe(
+    ofType(authActions.AUTO_LOGIN),
+    map(() => {
+      console.log('Here');
+      const localData = localStorage.getItem('userData');
+      console.log(localData);
+    if (!localData) {
+      return of();
+    }
+    const data: {
+      id: string;
+      email: string;
+      _token: string;
+      _tokenExpirationDate: string;
+    } = JSON.parse(localData);
+    if (!data._token) {
+      return of();
+    }
+    let duration =
+      new Date(data._tokenExpirationDate).getTime() - new Date().getTime();
+    const userData: AuthModel = {
+      localId: data.id,
+      idToken: data.id,
+      expiresIn: '' + duration,
+      email: data.email,
+    }
+    this.handleLoginUserState(userData);
+    const expTime = 10 * 60 * 1000;
+    if (duration > expTime) {
+      duration = expTime;
+    }
+    // this.autoLogout(duration);
+  }
+),
+  );
+
   constructor(
     private actions$: Actions,
     private http: HttpClient,
     private router: Router
   ) {}
 
-  private handleUserState(resData: AuthModel) {
+  private handleLoginUserState(resData: AuthModel) {
+    console.log(resData);
+    const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000);
+    return new authActions.LoginSuccess({
+      id: resData.localId,
+      email: resData.email,
+      token: resData.idToken,
+      expDate: expirationDate,
+    });
+  }
+
+  private handleSignUpUserState(resData: AuthModel) {
     const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000);
     return new authActions.SignUpSuccess({
       id: resData.localId,

@@ -5,16 +5,16 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+  import { Store } from '@ngrx/store';
 import { NgForm } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
 
+import { AppState } from '../store/app.reducers';
+import * as authActions from './store/auth.action';
 import { AuthService, AuthModel } from './auth.service';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceHolderDirective } from '../shared/placeholder.directive';
-import { AppState } from '../store/app.reducers';
-import * as authActions from './store/auth.action';
 
 @Component({
   selector: 'app-auth',
@@ -57,36 +57,23 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     if (this.isLoginMode) {
       this.loadingText = 'Logging in...';
-      // authObs = this.authService.login(email, password);
+      console.log('Start!');
       this.store.dispatch(
         new authActions.LoginStart({ email, password })
       );
     } else {
       this.loadingText = 'Signing up...';
       this.store.dispatch(new authActions.SignUpStart({email, password}))
-      // authObs = this.authService.signUp(email, password);
     }
-    // authObs.subscribe(
-    //   (res) => {
-    //     this.isLoading = false;
-    //     this.router.navigate(['/recipes']);
-    //     form.reset();
-    //   },
-    //   (errorMessage) => {
-    //     this.isLoading = false;
-    //     this.error = errorMessage;
-    //     this.showErrorAlert(errorMessage);
-    //   }
-    // );
-        form.reset();
+    form.reset();
   }
 
   onSwitch() {
     this.isLoginMode = !this.isLoginMode;
   }
 
-  onClose() {
-    this.error = null;
+  private clearError() {
+    this.store.dispatch(new authActions.ClearError());
   }
 
   private showErrorAlert(message: string) {
