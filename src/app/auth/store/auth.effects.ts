@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { Actions, ofType, Effect } from '@ngrx/effects';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { Actions, ofType, Effect } from '@ngrx/effects';
 import { switchMap, catchError, map, tap } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
+import { AuthModel } from '../auth.service';
 import * as authActions from './auth.action';
 import { environment } from '../../../environments/environment';
-import { AuthModel } from '../auth.service';
 
 @Injectable()
 export class AuthEffects {
@@ -25,17 +25,7 @@ export class AuthEffects {
           }
         )
         .pipe(
-          map((resData) => {
-            const expirationDate = new Date(
-              new Date().getTime() + +resData.expiresIn * 1000
-            );
-            return new authActions.LoginSuccess({
-              id: resData.localId,
-              email: resData.email,
-              token: resData.idToken,
-              expDate: expirationDate,
-            });
-          }),
+          map(this.handleUserState),
           catchError((errorRes: HttpErrorResponse) => {
             const error = this.handleError(errorRes);
             return of( new authActions.LoginFail(error));
@@ -59,15 +49,7 @@ export class AuthEffects {
           }
         )
         .pipe(
-          map((resData) => {
-            const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000);
-            return new authActions.SignUpSuccess({
-              id: resData.localId,
-              email: resData.email,
-              token: resData.idToken,
-              expDate: expirationDate,
-            });;
-          }),
+          map(this.handleUserState),
           catchError((errorRes: HttpErrorResponse) => {
             const error = this.handleError(errorRes);
             return of( new authActions.LoginFail(error));
@@ -90,24 +72,14 @@ export class AuthEffects {
     private router: Router
   ) {}
 
-  private handleUserState(
-    email: string,
-    userId: string,
-    token: string,
-    expiresIn: number
-  ) {
-    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-    // const newUser = new User(email, userId, token, expirationDate);
-    // this.token = newUser.token;
-    // this.autoLogout(expiresIn * 1000);
-    // this.user.next(newUser);
-      return new authActions.LoginSuccess({
-        id: userId,
-        email,
-        token,
-        expDate: new Date(new Date().getTime() + expiresIn * 1000),
-      });
-    // localStorage.setItem('userData', JSON.stringify(newUser));
+  private handleUserState(resData: AuthModel) {
+    const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000);
+    return new authActions.SignUpSuccess({
+      id: resData.localId,
+      email: resData.email,
+      token: resData.idToken,
+      expDate: expirationDate,
+    });
   }
 
   private handleError(errorRes: HttpErrorResponse) {
