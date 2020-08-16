@@ -39,7 +39,6 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.store.select('auth').subscribe((userState) => {
-      console.log(userState);
       this.isLoading = userState.loading;
       this.error = userState.authError;
       if(this.error) {
@@ -58,7 +57,6 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     if (this.isLoginMode) {
       this.loadingText = 'Logging in...';
-      console.log('Start!');
       this.store.dispatch(
         new authActions.LoginStart(credentials)
       );

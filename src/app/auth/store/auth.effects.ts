@@ -24,7 +24,6 @@ export interface AuthModel {
 export class AuthEffects {
 
   private handleUserState(resData: AuthModel) {
-    console.log(resData);
     const expirationDate = new Date(
       new Date().getTime() + +resData.expiresIn * 1000
     );
@@ -39,7 +38,6 @@ export class AuthEffects {
   }
 
   private handleError(errorRes: HttpErrorResponse) {
-    console.log(errorRes);
     let errorMessage = 'An error occurred!';
     if (
       errorRes.error &&
@@ -138,8 +136,6 @@ export class AuthEffects {
       }
       let duration =
         new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
-      const lDate = new Date(userData._tokenExpirationDate);
-      const lUser = new User(userData.email, userData.id, userData._token, lDate);
       this.authService.setExpTimer(duration);
       return new authActions.LoginSuccess({
         id: userData.id,
@@ -156,6 +152,7 @@ export class AuthEffects {
     tap(() => {
       localStorage.removeItem('userData');
       this.authService.clearExpTimer();
+      this.router.navigate(['/auth']);
     })
   );
 

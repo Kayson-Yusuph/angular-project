@@ -37,7 +37,6 @@ export function authReducers(
         user: null,
       };
     case AuthActions.LOGIN_START:
-      console.log('Login start reducer');
       return {
         ...state,
         loading: true,
