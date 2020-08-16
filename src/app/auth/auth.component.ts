@@ -10,9 +10,10 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 
+import { AuthService } from './auth.service';
 import { AppState } from '../store/app.reducers';
+import { AuthModel } from './store/auth.effects';
 import * as authActions from './store/auth.action';
-import { AuthService, AuthModel } from './auth.service';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceHolderDirective } from '../shared/placeholder.directive';
 

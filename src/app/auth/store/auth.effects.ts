@@ -6,45 +6,40 @@ import { switchMap, catchError, map, tap } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { User } from '../user.model';
-import { AuthModel } from '../auth.service';
 import * as authActions from './auth.action';
+import { AuthService } from '../auth.service';
 import { environment } from '../../../environments/environment';
-import { TestBed } from '@angular/core/testing';
+
+export interface AuthModel {
+  key?: string;
+  idToken: string;
+  email: string;
+  refreshToken?: string;
+  expiresIn: string;
+  localId: string;
+  registered?: boolean;
+}
 
 @Injectable()
 export class AuthEffects {
-  private expirationTimer: any;
 
-  private handleLoginUserState(resData: AuthModel) {
+  private handleUserState(resData: AuthModel) {
     console.log(resData);
     const expirationDate = new Date(
       new Date().getTime() + +resData.expiresIn * 1000
     );
     const newUser = new User(resData.email, resData.localId, resData.idToken, expirationDate);
+    localStorage.setItem('userData', JSON.stringify(newUser));
     return new authActions.LoginSuccess({
       id: resData.localId,
       email: resData.email,
       token: resData.idToken,
       expDate: expirationDate,
     });
-    localStorage.setItem('userData', JSON.stringify(newUser));
-  }
-
-  private handleSignUpUserState(resData: AuthModel) {
-    const expirationDate = new Date(
-      new Date().getTime() + +resData.expiresIn * 1000
-    );
-    const newUser = new User(resData.email, resData.localId, resData.idToken, expirationDate);
-    return new authActions.SignUpSuccess({
-      id: resData.localId,
-      email: resData.email,
-      token: resData.idToken,
-      expDate: expirationDate,
-    });
-    localStorage.setItem('userData', JSON.stringify(newUser));
   }
 
   private handleError(errorRes: HttpErrorResponse) {
+    console.log(errorRes);
     let errorMessage = 'An error occurred!';
     if (
       errorRes.error &&
@@ -65,14 +60,8 @@ export class AuthEffects {
           errorMessage = 'This account has been disabled!';
       }
     }
-    return errorMessage;
+    return of(new authActions.LoginFail(errorMessage));
   }
-
-  // autoLogout(expirationDuration: number) {
-  //   this.expirationTimer = setTimeout(() => {
-  //     this.store.di
-  //   }, expirationDuration);
-  // }
 
   @Effect({ dispatch: false })
   loginSuccess = this.actions$.pipe(
@@ -97,11 +86,11 @@ export class AuthEffects {
           }
         )
         .pipe(
-          map(this.handleSignUpUserState),
-          catchError((errorRes: HttpErrorResponse) => {
-            const error = this.handleError(errorRes);
-            return of(new authActions.LoginFail(error));
-          })
+          tap((resData) => {
+            this.authService.setExpTimer(+resData.expiresIn * 1000);
+          }),
+          map(this.handleUserState),
+          catchError(this.handleError)
         );
     })
   );
@@ -120,12 +109,11 @@ export class AuthEffects {
           }
         )
         .pipe(
-          // tap((data) => console.log('Tapped value', data)),
-          map(this.handleLoginUserState),
-          catchError((errorRes: HttpErrorResponse) => {
-            const error = this.handleError(errorRes);
-            return of(new authActions.LoginFail(error));
-          })
+          tap((resData) => {
+            this.authService.setExpTimer(+resData.expiresIn * 1000);
+          }),
+          map(this.handleUserState),
+          catchError(this.handleError)
         );
     })
   );
@@ -133,8 +121,7 @@ export class AuthEffects {
   @Effect()
   autoLogin = this.actions$.pipe(
     ofType(authActions.AUTO_LOGIN),
-    // switchMap((userRes: authActions.AutoLogin) => {
-    map((userRes: authActions.AutoLogin) => {
+    map(() => {
       const localData = localStorage.getItem('userData');
       if(!localData) {
         return {type: 'No Data'};
@@ -153,13 +140,13 @@ export class AuthEffects {
         new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
       const lDate = new Date(userData._tokenExpirationDate);
       const lUser = new User(userData.email, userData.id, userData._token, lDate);
+      this.authService.setExpTimer(duration);
       return new authActions.LoginSuccess({
         id: userData.id,
         email: userData.email,
         token: userData._token,
         expDate: new Date(userData._tokenExpirationDate),
       });
-      return {type: 'No Data'};
     })
   );
 
@@ -168,12 +155,14 @@ export class AuthEffects {
     ofType(authActions.LOGOUT),
     tap(() => {
       localStorage.removeItem('userData');
+      this.authService.clearExpTimer();
     })
   );
 
   constructor(
     private actions$: Actions,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 }
