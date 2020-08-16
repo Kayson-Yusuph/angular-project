@@ -68,11 +68,11 @@ export class AuthEffects {
     return errorMessage;
   }
 
-  autoLogout(expirationDuration: number) {
-    this.expirationTimer = setTimeout(() => {
-      this.store.di
-    }, expirationDuration);
-  }
+  // autoLogout(expirationDuration: number) {
+  //   this.expirationTimer = setTimeout(() => {
+  //     this.store.di
+  //   }, expirationDuration);
+  // }
 
   @Effect({ dispatch: false })
   loginSuccess = this.actions$.pipe(
@@ -133,41 +133,41 @@ export class AuthEffects {
   @Effect()
   autoLogin = this.actions$.pipe(
     ofType(authActions.AUTO_LOGIN),
-    switchMap((userRes: authActions.AutoLogin) => {
+    // switchMap((userRes: authActions.AutoLogin) => {
+    map((userRes: authActions.AutoLogin) => {
       const localData = localStorage.getItem('userData');
       if(!localData) {
-        return of();
+        return {type: 'No Data'};
       }
 
       const userData: {
         id: string;
         email: string;
-        _token: string;
+        _token: string;autoLogin
         _tokenExpirationDate: string;
       } = JSON.parse(localData);
       if (!userData._token) {
-        return;
+        return {type: 'No Data'};
       }
       let duration =
         new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
       const lDate = new Date(userData._tokenExpirationDate);
       const lUser = new User(userData.email, userData.id, userData._token, lDate);
-      return of(new authActions.LoginSuccess({
+      return new authActions.LoginSuccess({
         id: userData.id,
         email: userData.email,
         token: userData._token,
         expDate: new Date(userData._tokenExpirationDate),
-      }));
+      });
+      return {type: 'No Data'};
     })
   );
 
+  @Effect({dispatch: false})
   logout = this.actions$.pipe(
     ofType(authActions.LOGOUT),
-    switchMap((resData: authActions.Logout) => {
-      return of(new authActions.Logout());
-      if(this.expirationTimer) {
-        clearTimeout(this.expirationTimer);
-      }
+    tap(() => {
+      localStorage.removeItem('userData');
     })
   );
 
