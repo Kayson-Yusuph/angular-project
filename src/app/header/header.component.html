@@ -5,15 +5,41 @@
     </div>
     <div class="colapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li routerLinkActive="active"><a class="cr-pointer" routerLink="/recipes">recipe</a></li>
-        <li routerLinkActive="active"><a class="cr-pointer" routerLink="/shopping-list">Shopping List</a></li>
+        <li
+          routerLinkActive="active"
+          *ngIf="isLogin"
+        ><a
+            class="cr-pointer"
+            routerLink="/recipes"
+          >recipe</a>
+        </li>
+        <li routerLinkActive="active"><a
+            class="cr-pointer"
+            routerLink="/shopping-list"
+          >Shopping List</a></li>
       </ul>
-      <ul class="nav navbar-right">
-        <li class="dropdown" appDropdown>
-          <a class="cr-pointer" class="dropdown-toggle">Manage Data <span class="caret"></span></a>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a
+            class="cr-pointer"
+            (click)="onLoginLogout()"
+          >{{isLogin ? 'Logout' : 'Login'}}</a>
+        </li>
+        <li
+          class="dropdown"
+          appDropDown
+          *ngIf="isLogin"
+        >
+          <a class="cr-pointer dropdown-toggle">Manage Data <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a class="cr-pointer">Saving Data</a></li>
-            <li><a class="cr-pointer">Fetching Data</a></li>
+            <li><a
+                class="cr-pointer"
+                (click)="onSave()"
+              >Saving Data</a></li>
+            <li><a
+                class="cr-pointer"
+                (click)="onFetch()"
+              >Fetching Data</a></li>
           </ul>
         </li>
       </ul>

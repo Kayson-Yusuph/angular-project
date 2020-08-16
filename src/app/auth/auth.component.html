@@ -1,0 +1,54 @@
+<ng-template appPlaceHolder></ng-template>
+<div class="row">
+  <div class="col-xs-12 col-md-4 col-md-offset-4">
+    <!-- <div class="alert alert-danger" *ngIf="error && !isLoading">
+      <p> {{ error }} </p>
+    </div> -->
+    <!-- <app-alert [message]="error" *ngIf="error" (closeAlert)="onClose()"></app-alert> -->
+    <div *ngIf="isLoading">
+      <app-loader [loadingText]="loadingText"></app-loader>
+    </div>
+    <form
+      #f="ngForm"
+      (ngSubmit)="onSubmit(f)"
+      *ngIf="!isLoading"
+    >
+      <div class="form-group">
+        <label for="email">E-Mail</label>
+        <input
+          class="form-control"
+          autocomplete="off"
+          type="text"
+          id="email"
+          name="email"
+          ngModel
+          required
+          email
+        >
+        <label for="password">Password</label>
+        <input
+          class="form-control"
+          type="password"
+          id="password"
+          name="password"
+          ngModel
+          required
+          minlength="6"
+          (keydown.enter)="onSubmit(f)"
+        >
+      </div>
+      <br>
+      <div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!f.valid"
+        >{{isLoginMode? 'Login' : 'Sign Up'}}</button> | <button
+          type="button"
+          class="btn btn-primary"
+          (click)="onSwitch()"
+        >Switch to {{isLoginMode? 'Sign Up': 'Login'}}</button>
+      </div>
+    </form>
+  </div>
+</div>
