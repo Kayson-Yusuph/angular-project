@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 
 import { CoreModule } from './core.module';
 import { AppComponent } from './app.component';
@@ -24,6 +25,7 @@ import { HeaderComponent } from './header/header.component';
     StoreModule.forRoot(fromAppStore.appReducer),
     EffectsModule.forRoot([AuthEffects]),
     StoreDevtoolsModule.instrument({logOnly: environment.production}),
+    StoreRouterConnectingModule.forRoot(),
     // app modules
     SharedModule,
     CoreModule,
