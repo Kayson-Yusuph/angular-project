@@ -12,7 +12,7 @@ const initialState: State = {
   loading: false,
   authError: null
 };
-export function authReducers(
+export function reducers(
   state = initialState,
   action: AuthActions.AuthActionTypes
 ) {

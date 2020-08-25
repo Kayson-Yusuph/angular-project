@@ -6,6 +6,7 @@ import { Recipe } from '../recipes/recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
 import { AddIngredients } from '../shopping-list/store/shopping-list.actions';
 import { AppState } from '../store/app.reducers';
+import { AddRecipes, AddRecipe } from '../recipes/store/recipe.actions';
 
 @Injectable({providedIn: 'root'})
 export class RecipeService {
@@ -16,8 +17,9 @@ export class RecipeService {
   constructor( private store: Store<AppState>) {}
 
   setRecipes(recipes: Recipe[]) {
-    this.recipes = recipes;
-    this.updateRecipes.next(this.recipes.slice());
+    this.store.dispatch(new AddRecipes({recipes}));
+    // this.recipes = recipes;
+    // this.updateRecipes.next(this.recipes.slice());
   }
 
   getRecipe(id: number) {
@@ -39,9 +41,10 @@ export class RecipeService {
   }
 
   addRecipe(recipe: Recipe) {
-    this.recipes.push(recipe);
-    this.updateRecipes.next(this.recipes.slice());
-    return this.recipes.length - 1;
+    this.store.dispatch(new AddRecipe({recipe}))
+    // this.recipes.push(recipe);
+    // this.updateRecipes.next(this.recipes.slice());
+    // return this.recipes.length - 1;
   }
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
