@@ -31,7 +31,6 @@ export class DataStoreService {
   fetchRecipes() {
     return this.http.get<Recipe[]>(
       'https://angular-app-268d0.firebaseio.com/recipes.json').pipe(map(res => {
-        console.log(res);
         return res.map(rsp => {
           const ingredients = rsp.ingredients ? rsp.ingredients : [];
           return { ...rsp, ingredients };

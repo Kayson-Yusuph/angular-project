@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import { RecipeService } from '../../services/recipes.service';
 import { Recipe } from '../recipe.model';
@@ -12,7 +12,7 @@ import * as RecipeActions from '../store/recipe.actions';
 @Component({
   selector: 'app-recipe-edit',
   templateUrl: './recipe-edit.component.html',
-  styleUrls: ['./recipe-edit.component.css']
+  styleUrls: ['./recipe-edit.component.css'],
 })
 export class RecipeEditComponent implements OnInit {
   id: number;
@@ -26,51 +26,53 @@ export class RecipeEditComponent implements OnInit {
     private recipeService: RecipeService,
     private fb: FormBuilder,
     private store: Store<AppState>
-  ) { }
+  ) {}
 
   get ingredientControls() {
     return (this.recipeForm.get('ingredients') as FormArray).controls;
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params: Params) => {
-      console.log(params);
-      this.id = +params.id;
-      this.editMode = params.id !== undefined;
-      this.initForm();
-    });
-  }
-
-  private initForm() {
     const ingredients = this.fb.array([]);
     this.recipeForm = this.fb.group({
       name: this.fb.control('', this.getFormInputValidators(3)),
       imagePath: this.fb.control('', Validators.required),
       description: this.fb.control('', this.getFormInputValidators(10)),
-      ingredients
+      ingredients,
     });
-    this.store.select('recipe').subscribe(resData => {
-      console.log('Called here');
+    this.route.params.pipe(
+      map((params: Params) => +params['id']),
+      switchMap((id) => {
+        this.id = id;
+        this.editMode = this.id !== undefined;
+        return this.store.select('recipe');
+      }),
+      map((recipeState) => recipeState.recipes)
+    ).subscribe((recipes) => {
       if (this.editMode) {
-        this.recipe = resData.recipes[this.id];
-        console.log(this.recipe);
+        this.recipe = recipes[this.id];
         for (const ingredient of this.recipe.ingredients) {
           ingredients.push(
             this.fb.group({
-              name: this.fb.control(ingredient.name, this.getFormInputValidators(4)),
-              amount: this.fb.control(ingredient.amount, [Validators.required, Validators.pattern('^[1-9][0-9]*$')])
-            }),
+              name: this.fb.control(
+                ingredient.name,
+                this.getFormInputValidators(4)
+              ),
+              amount: this.fb.control(ingredient.amount, [
+                Validators.required,
+                Validators.pattern('^[1-9][0-9]*$'),
+              ]),
+            })
           );
         }
         this.recipeForm.patchValue({
           name: this.recipe.name,
           description: this.recipe.description,
           imagePath: this.recipe.imagePath,
-          ingredients
-        })
-        // console.log(this.recipeForm.value);
+          ingredients,
+        });
       }
-    })
+    });
   }
 
   onSave() {
@@ -78,7 +80,7 @@ export class RecipeEditComponent implements OnInit {
     if (this.editMode) {
       this.recipeService.updateRecipe(this.id, newRecipe);
     } else {
-      this.store.dispatch(new RecipeActions.AddRecipe({recipe: newRecipe}));
+      this.store.dispatch(new RecipeActions.AddRecipe({ recipe: newRecipe }));
     }
     this.router.navigate(['recipes']);
   }
@@ -87,7 +89,10 @@ export class RecipeEditComponent implements OnInit {
     (this.recipeForm.get('ingredients') as FormArray).push(
       this.fb.group({
         name: this.fb.control(null, this.getFormInputValidators(4)),
-        amount: this.fb.control(null, [Validators.required, Validators.pattern('^[1-9][0-9]*$')])
+        amount: this.fb.control(null, [
+          Validators.required,
+          Validators.pattern('^[1-9][0-9]*$'),
+        ]),
       })
     );
   }
@@ -97,11 +102,14 @@ export class RecipeEditComponent implements OnInit {
   }
 
   getFormInputValidators(min: number): any[] {
-    return [Validators.required, Validators.minLength(min), Validators.pattern(/^[\w\s]+$/)];
+    return [
+      Validators.required,
+      Validators.minLength(min),
+      Validators.pattern(/^[\w\s]+$/),
+    ];
   }
 
   onRemoveIngredient(index: number) {
     (this.recipeForm.get('ingredients') as FormArray).removeAt(index);
   }
-
 }

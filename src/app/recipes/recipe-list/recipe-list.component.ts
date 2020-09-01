@@ -18,10 +18,7 @@ export class RecipeListComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.recipes$ = this.store.select('recipe').pipe(map(recipeData => {
-      console.log(recipeData);
-      return recipeData.recipes;
-    }));
+    this.recipes$ = this.store.select('recipe').pipe(map(recipeData => recipeData.recipes));
   }
 
 }
