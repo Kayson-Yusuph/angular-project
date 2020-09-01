@@ -16,11 +16,6 @@ export function reducers(
   switch (action.type) {
     case fromRecipeActions.ADD_RECIPE:
       return { ...state, recipes: [...state.recipes, action.payload.recipe] };
-    case fromRecipeActions.ADD_RECIPES:
-      return {
-        ...state,
-        recipes: [...state.recipes, ...action.payload.recipes],
-      };
     case fromRecipeActions.SET_RECIPES:
       return {
         ...state,
@@ -35,6 +30,14 @@ export function reducers(
         ...state,
         recipes,
       };
+    case fromRecipeActions.DELETE_RECIPE:
+      const newRecipes = [...state.recipes];
+      newRecipes.splice(+action.payload.id, 1);
+      console.log({newRecipes});
+      return {
+        ...state,
+        recipes: newRecipes
+      }
     default:
       return state;
   }

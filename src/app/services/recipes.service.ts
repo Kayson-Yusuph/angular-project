@@ -22,7 +22,7 @@ export class RecipeService {
   }
 
   setRecipes(recipes: Recipe[]) {
-    this.store.dispatch(new RecipeActions.AddRecipes({recipes}));
+    this.store.dispatch(new RecipeActions.SetRecipes({recipes}));
     // this.recipes = recipes;
     // this.updateRecipes.next(this.recipes.slice());
   }
