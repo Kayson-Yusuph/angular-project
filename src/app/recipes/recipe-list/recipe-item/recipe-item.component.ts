@@ -2,7 +2,6 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { Recipe } from '../../recipe.model';
-import { RecipeService } from '../../../services/recipes.service';
 import { AppState } from '../../../store/app.reducers';
 
 @Component({
@@ -15,7 +14,7 @@ export class RecipeItemComponent implements OnInit {
   recipe: Recipe;
   @Input('index') id: number;
 
-  constructor(private recipeService: RecipeService, private store: Store<AppState>) { }
+  constructor( private store: Store<AppState>) { }
 
   ngOnInit(): void {
     this.store.select('recipe').subscribe(resData => {

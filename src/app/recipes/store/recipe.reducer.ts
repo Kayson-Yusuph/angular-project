@@ -23,7 +23,7 @@ export function reducers(
       };
     case fromRecipeActions.UPDATE_RECIPE:
       const recipes = [...state.recipes];
-      const index = action.payload.id;
+      const index = +action.payload.id;
       const newRecipe = action.payload.recipe;
       recipes[index] = newRecipe;
       return {

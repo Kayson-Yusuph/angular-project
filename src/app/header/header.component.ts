@@ -3,8 +3,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 
-import { DataStoreService } from '../services/data-store.service';
-import { AuthService } from '../auth/auth.service';
 import { AppState } from '../store/app.reducers';
 import * as authActions from '../auth/store/auth.action';
 import * as recipeActions from '../recipes/store/recipe.actions';
@@ -20,8 +18,6 @@ export class HeaderComponent implements OnInit {
   isLogin = false;
 
   constructor(
-    private dataStoreService: DataStoreService,
-    private authService: AuthService,
     private router: Router,
     private store: Store<AppState>
   ) { }
@@ -32,16 +28,11 @@ export class HeaderComponent implements OnInit {
   }
 
   onSave() {
-    this.dataStoreService.storeRecipes();
+    this.store.dispatch(new recipeActions.StoreRecipes());
   }
 
   onFetch() {
     this.store.dispatch(new recipeActions.FetchRecipes());
-    // this.dataStoreService.fetchRecipes()
-    //   .subscribe((res) => {
-    //   }, (error) => {
-    //     console.error(error);
-    //   });
   }
 
   onLoginLogout() {
