@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
 
 import { Recipe } from '../recipes/recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
@@ -14,7 +15,11 @@ export class RecipeService {
 
   private recipes: Recipe[] = [];
 
-  constructor( private store: Store<AppState>) {}
+  constructor( private store: Store<AppState>) {
+    this.store.select('recipe').pipe(map(resData => resData.recipes)).subscribe(recipes => {
+      this.recipes = recipes;
+    });
+  }
 
   setRecipes(recipes: Recipe[]) {
     this.store.dispatch(new AddRecipes({recipes}));

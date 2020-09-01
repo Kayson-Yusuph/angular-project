@@ -4,6 +4,7 @@ import { Subscription, Observable } from 'rxjs';
 
 import { Recipe } from '../recipe.model';
 import { AppState } from '../../store/app.reducers';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-recipe-list',
@@ -12,12 +13,15 @@ import { AppState } from '../../store/app.reducers';
 })
 export class RecipeListComponent implements OnInit {
 
-  recipes$: Observable<{recipes: Recipe[]}>;
+  recipes$: Observable<Recipe[]>;
 
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.recipes$ = this.store.select('recipe');
+    this.recipes$ = this.store.select('recipe').pipe(map(recipeData => {
+      console.log(recipeData);
+      return recipeData.recipes;
+    }));
   }
 
 }

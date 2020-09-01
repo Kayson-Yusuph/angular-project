@@ -5,8 +5,8 @@ import { Recipe } from '../recipe.model';
 export const ADD_RECIPE = '[Recipe] Add a Recipe';
 export const ADD_RECIPES = '[Recipe] Add Recipes';
 export const UPSERT_RECIPE = '[Recipe] Upsert a Recipe';
-export const UPSERT_RECIPES = '[Recipe] Upsert Recipes';
 export const DELETE_RECIPE = '[Delete] Delete a Recipe';
+export const UPSERT_RECIPES = '[Recipe] Upsert Recipes';
 export const DELETE_RECIPES = '[Delete] Delete Recipes';
 
 export class AddRecipe implements Action {
