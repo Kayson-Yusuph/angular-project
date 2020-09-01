@@ -22,18 +22,23 @@ export interface AuthModel {
 
 @Injectable()
 export class AuthEffects {
-
   private handleUserState(resData: AuthModel) {
     const expirationDate = new Date(
       new Date().getTime() + +resData.expiresIn * 1000
     );
-    const newUser = new User(resData.email, resData.localId, resData.idToken, expirationDate);
+    const newUser = new User(
+      resData.email,
+      resData.localId,
+      resData.idToken,
+      expirationDate
+    );
     localStorage.setItem('userData', JSON.stringify(newUser));
     return new authActions.LoginSuccess({
       id: resData.localId,
       email: resData.email,
       token: resData.idToken,
       expDate: expirationDate,
+      redirect: true,
     });
   }
 
@@ -64,8 +69,10 @@ export class AuthEffects {
   @Effect({ dispatch: false })
   loginSuccess = this.actions$.pipe(
     ofType(authActions.LOGIN_SUCCESS, authActions.SIGN_UP_SUCCESS),
-    tap(() => {
-      this.router.navigate(['/']);
+    tap((data: authActions.LoginSuccess) => {
+      if (data.payload.redirect) {
+        this.router.navigate(['/']);
+      }
     })
   );
 
@@ -121,32 +128,35 @@ export class AuthEffects {
     ofType(authActions.AUTO_LOGIN),
     map(() => {
       const localData = localStorage.getItem('userData');
-      if(!localData) {
-        return {type: 'No Data'};
+      if (!localData) {
+        return { type: 'No Data' };
       }
 
       const userData: {
         id: string;
         email: string;
-        _token: string;autoLogin
+        _token: string;
+        autoLogin;
         _tokenExpirationDate: string;
       } = JSON.parse(localData);
       if (!userData._token) {
-        return {type: 'No Data'};
+        return { type: 'No Data' };
       }
       let duration =
-        new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+        new Date(userData._tokenExpirationDate).getTime() -
+        new Date().getTime();
       this.authService.setExpTimer(duration);
       return new authActions.LoginSuccess({
         id: userData.id,
         email: userData.email,
         token: userData._token,
         expDate: new Date(userData._tokenExpirationDate),
+        redirect: false,
       });
     })
   );
 
-  @Effect({dispatch: false})
+  @Effect({ dispatch: false })
   logout = this.actions$.pipe(
     ofType(authActions.LOGOUT),
     tap(() => {

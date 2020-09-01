@@ -14,7 +14,7 @@ export class LoginSuccess implements Action {
   readonly type = LOGIN_SUCCESS;
 
   constructor(
-    public payload: { id: string; email: string; token: string; expDate: Date }
+    public payload: { id: string; email: string; token: string; expDate: Date, redirect: boolean }
   ) {}
 }
 
@@ -44,7 +44,7 @@ export class SignUpSuccess implements Action {
   readonly type = SIGN_UP_SUCCESS;
 
   constructor(
-    public payload: { id: string; email: string; token: string; expDate: Date }
+    public payload: { id: string; email: string; token: string; expDate: Date, redirect: boolean }
   ) {}
 }
 

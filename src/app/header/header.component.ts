@@ -7,6 +7,7 @@ import { DataStoreService } from '../services/data-store.service';
 import { AuthService } from '../auth/auth.service';
 import { AppState } from '../store/app.reducers';
 import * as authActions from '../auth/store/auth.action';
+import * as recipeActions from '../recipes/store/recipe.actions';
 
 @Component({
   selector: 'app-header',
@@ -35,11 +36,12 @@ export class HeaderComponent implements OnInit {
   }
 
   onFetch() {
-    this.dataStoreService.fetchRecipes()
-      .subscribe((res) => {
-      }, (error) => {
-        console.error(error);
-      });
+    this.store.dispatch(new recipeActions.FetchRecipes());
+    // this.dataStoreService.fetchRecipes()
+    //   .subscribe((res) => {
+    //   }, (error) => {
+    //     console.error(error);
+    //   });
   }
 
   onLoginLogout() {

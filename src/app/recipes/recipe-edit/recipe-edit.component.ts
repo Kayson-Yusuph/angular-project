@@ -18,7 +18,6 @@ export class RecipeEditComponent implements OnInit {
   id: number;
   editMode = false;
   recipeForm: FormGroup;
-  recipe: Recipe;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,7 +40,7 @@ export class RecipeEditComponent implements OnInit {
       ingredients,
     });
     this.route.params.pipe(
-      map((params: Params) => +params['id']),
+      map((params: Params) => params['id']),
       switchMap((id) => {
         this.id = id;
         this.editMode = this.id !== undefined;
@@ -51,8 +50,9 @@ export class RecipeEditComponent implements OnInit {
     ).subscribe((recipes) => {
       try{
         if (this.editMode) {
-          this.recipe = recipes[this.id];
-          for (const ingredient of this.recipe.ingredients) {
+          this.id = +this.id;
+          const recipe = recipes[this.id];
+          for (const ingredient of recipe.ingredients) {
             ingredients.push(
               this.fb.group({
                 name: this.fb.control(
@@ -66,12 +66,10 @@ export class RecipeEditComponent implements OnInit {
               })
             );
           }
-          console.log({ingredients});
           this.recipeForm.patchValue({
-            // ingredients,
-            name: this.recipe.name,
-            description: this.recipe.description,
-            imagePath: this.recipe.imagePath,
+            name: recipe.name,
+            description: recipe.description,
+            imagePath: recipe.imagePath,
           });
         }
       } catch (e) {

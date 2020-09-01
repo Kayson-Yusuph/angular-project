@@ -8,9 +8,7 @@ import * as authActions from '../auth/store/auth.action';
 export class AuthService {
   private expirationTimer: any;
 
-  constructor(
-    private store: Store<appStore.AppState>
-  ) {}
+  constructor(private store: Store<appStore.AppState>) {}
 
   setExpTimer(expirationDuration: number) {
     this.expirationTimer = setTimeout(() => {
@@ -19,7 +17,7 @@ export class AuthService {
   }
 
   clearExpTimer() {
-    if(this.expirationTimer) {
+    if (this.expirationTimer) {
       clearTimeout(this.expirationTimer);
       this.expirationTimer = null;
     }

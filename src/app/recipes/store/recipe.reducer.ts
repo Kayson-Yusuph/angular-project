@@ -17,7 +17,15 @@ export function reducers(
     case fromRecipeActions.ADD_RECIPE:
       return { ...state, recipes: [...state.recipes, action.payload.recipe] };
     case fromRecipeActions.ADD_RECIPES:
-      return { ...state, recipes: [...state.recipes, ...action.payload.recipes] };
+      return {
+        ...state,
+        recipes: [...state.recipes, ...action.payload.recipes],
+      };
+    case fromRecipeActions.SET_RECIPES:
+      return {
+        ...state,
+        recipes: [...action.payload.recipes],
+      };
     case fromRecipeActions.UPDATE_RECIPE:
       const recipes = [...state.recipes];
       const index = action.payload.id;
@@ -26,7 +34,7 @@ export function reducers(
       return {
         ...state,
         recipes,
-      }
+      };
     default:
       return state;
   }
