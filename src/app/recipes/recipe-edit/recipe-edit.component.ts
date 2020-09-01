@@ -49,28 +49,33 @@ export class RecipeEditComponent implements OnInit {
       }),
       map((recipeState) => recipeState.recipes)
     ).subscribe((recipes) => {
-      if (this.editMode) {
-        this.recipe = recipes[this.id];
-        for (const ingredient of this.recipe.ingredients) {
-          ingredients.push(
-            this.fb.group({
-              name: this.fb.control(
-                ingredient.name,
-                this.getFormInputValidators(4)
-              ),
-              amount: this.fb.control(ingredient.amount, [
-                Validators.required,
-                Validators.pattern('^[1-9][0-9]*$'),
-              ]),
-            })
-          );
+      try{
+        if (this.editMode) {
+          this.recipe = recipes[this.id];
+          for (const ingredient of this.recipe.ingredients) {
+            ingredients.push(
+              this.fb.group({
+                name: this.fb.control(
+                  ingredient.name,
+                  this.getFormInputValidators(4)
+                ),
+                amount: this.fb.control(ingredient.amount, [
+                  Validators.required,
+                  Validators.pattern('^[1-9][0-9]*$'),
+                ]),
+              })
+            );
+          }
+          console.log({ingredients});
+          this.recipeForm.patchValue({
+            // ingredients,
+            name: this.recipe.name,
+            description: this.recipe.description,
+            imagePath: this.recipe.imagePath,
+          });
         }
-        this.recipeForm.patchValue({
-          name: this.recipe.name,
-          description: this.recipe.description,
-          imagePath: this.recipe.imagePath,
-          ingredients,
-        });
+      } catch (e) {
+        console.error(e);
       }
     });
   }

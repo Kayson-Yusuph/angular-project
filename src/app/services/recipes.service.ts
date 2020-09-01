@@ -7,7 +7,7 @@ import { Recipe } from '../recipes/recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
 import { AddIngredients } from '../shopping-list/store/shopping-list.actions';
 import { AppState } from '../store/app.reducers';
-import { AddRecipes, AddRecipe } from '../recipes/store/recipe.actions';
+import * as RecipeActions from '../recipes/store/recipe.actions';
 
 @Injectable({providedIn: 'root'})
 export class RecipeService {
@@ -22,7 +22,7 @@ export class RecipeService {
   }
 
   setRecipes(recipes: Recipe[]) {
-    this.store.dispatch(new AddRecipes({recipes}));
+    this.store.dispatch(new RecipeActions.AddRecipes({recipes}));
     // this.recipes = recipes;
     // this.updateRecipes.next(this.recipes.slice());
   }
@@ -41,12 +41,13 @@ export class RecipeService {
   }
 
   updateRecipe(index: number, recipe: Recipe) {
-    this.recipes[index] = recipe;
-    this.updateRecipes.next(this.recipes.slice());
+    this.store.dispatch(new RecipeActions.UpdateRecipe({id: index, recipe}));
+    // this.recipes[index] = recipe;
+    // this.updateRecipes.next(this.recipes.slice());
   }
 
   addRecipe(recipe: Recipe) {
-    this.store.dispatch(new AddRecipe({recipe}))
+    this.store.dispatch(new RecipeActions.AddRecipe({recipe}))
     // this.recipes.push(recipe);
     // this.updateRecipes.next(this.recipes.slice());
     // return this.recipes.length - 1;
